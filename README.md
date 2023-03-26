@@ -64,4 +64,14 @@ k8senv use kubectl 1.26.2
 k8senv kubectl use v1.26.2
 ```
 
+**Remove an existing version of kubectl**
+
+Any of below commands can be used to remove kubectl version 1.26.2.
+
+```
+k8senv remove kubectl v1.26.2
+k8senv remove kubectl 1.26.2
+k8senv kubectl remove v1.26.2
+```
+
 **Under development**
