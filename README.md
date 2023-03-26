@@ -8,6 +8,8 @@ Manytimes we need to manage many Kubernetes clusters from same jumpbox or machin
 
 This small tool is to help manage different versions of Kubernetes clients. Kubernetes clients `kubectl`, `helm` and `velero` are supported at this stage.
 
+**NOTE: Currently only `kubectl` is supported. Support for `helm` and `velero` is under development.**
+
 ## How to install/setup
 
 1. Create a directory .k8senv/bin in home directory `mkdir -p ~/.k8senv/bin`
@@ -62,6 +64,16 @@ Any of below commands can be used to switch kubectl version to 1.26.2. If versio
 k8senv use kubectl v1.26.2
 k8senv use kubectl 1.26.2
 k8senv kubectl use v1.26.2
+```
+
+**Remove an existing version of kubectl**
+
+Any of below commands can be used to remove kubectl version 1.26.2.
+
+```
+k8senv remove kubectl v1.26.2
+k8senv remove kubectl 1.26.2
+k8senv kubectl remove v1.26.2
 ```
 
 **Under development**
