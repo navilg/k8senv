@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/navilg/k8senv/internal/install"
+	"github.com/navilg/k8senv/internal/list"
 	"github.com/navilg/k8senv/internal/use"
 	"github.com/spf13/cobra"
 )
@@ -38,6 +39,9 @@ Examples:
 	# Install kubectl version 1.20.0 and overwrite it if it already exists
 	k8senv install kubectl 1.20.0 --overwrite
 
+	# Install kubectl version 1.20.0 aand set timeout to 300 seconds (If internet is slow), Default: 120 seconds
+	k8senv install kubectl 1.20.0 --timeout=300
+
 Supported version formats:
 	v1.20.3
 	1.20.3	# Defaults to v1.20.3
@@ -49,7 +53,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to install e.g. v1.20.3")
 			os.Exit(1)
 		}
-		_ = install.InstallKubectl(args[0], overwriteInstall)
+		_ = install.InstallKubectl(args[0], overwriteInstall, timeout)
 
 	},
 }
@@ -78,10 +82,27 @@ Supported version formats:
 	},
 }
 
+var listKubectlCmd = &cobra.Command{
+	Use:   "kubectl",
+	Short: "List all installed versions of kubectl",
+	Long: `List all installed versions of kubectl
+	
+Examples:
+	k8senv list kubectl`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 0 {
+			fmt.Println("No argument is required for listing versions")
+			os.Exit(1)
+		}
+		_ = list.ListKubectl()
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(kubectlCmd)
 	installCmd.AddCommand(installKubectlCmd)
 	useCmd.AddCommand(useKubectlCmd)
+	listCmd.AddCommand(listKubectlCmd)
 
 	// Here you will define your flags and configuration settings.
 

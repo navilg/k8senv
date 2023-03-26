@@ -42,6 +42,16 @@ k8senv install kubectl 1.26.2
 k8senv kubectl install v1.26.2
 k8senv install kubectl 1.26.2 --overwrite   # Installs even if it already exists
 k8senv install kubectl latest               # Installs latest stable version of kubectl
+k8s install kubectl v1.19.2 --timeout=300   # Install 1.19.2 with timeout of 300 seconds. Default timeout is 120 seconds.
+```
+
+**List all installed version of kubectl**
+
+Any of below commandds can be used to list all kubectl client's version installed by k8senv.
+
+```
+k8senv list kubectl
+k8senv kubectl list
 ```
 
 **Switch to a version of kubectl**

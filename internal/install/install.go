@@ -8,12 +8,13 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/navilg/k8senv/internal/checksum"
 	"github.com/navilg/k8senv/internal/config"
 )
 
-func InstallKubectl(version string, overwrite bool) error {
+func InstallKubectl(version string, overwrite bool, timeout int) error {
 	latestVersionUrl := "https://storage.googleapis.com/kubernetes-release/release/stable.txt"
 	dotK8sEnvPath := config.GetDotK8senvPath()
 
@@ -27,6 +28,7 @@ func InstallKubectl(version string, overwrite bool) error {
 
 		fmt.Println("Fetching latest stable version")
 		client := http.Client{
+			Timeout: 30 * time.Second,
 			CheckRedirect: func(r *http.Request, via []*http.Request) error {
 				r.URL.Opaque = r.URL.Path
 				return nil
@@ -79,10 +81,12 @@ func InstallKubectl(version string, overwrite bool) error {
 		return nil
 	}
 
-	fmt.Println("Installing kubectl version", version)
+	fmt.Println("Downloading kubectl version", version)
+	fmt.Println("Download in progress... It may take upto 2 minutes depending on internet speed.")
 
 	// Create http client
 	client := http.Client{
+		Timeout: time.Duration(timeout) * time.Second,
 		CheckRedirect: func(r *http.Request, via []*http.Request) error {
 			r.URL.Opaque = r.URL.Path
 			return nil
@@ -121,7 +125,7 @@ func InstallKubectl(version string, overwrite bool) error {
 		return err
 	}
 
-	fmt.Println("Installed kubectl version", version)
+	fmt.Println("Downloaded kubectl version", version)
 	fmt.Println("Validating checksum")
 
 	// Perform HTTP GET request
@@ -148,7 +152,7 @@ func InstallKubectl(version string, overwrite bool) error {
 		return err
 	}
 
-	if isValid := checksum.ValidateSHA256Sum(strings.TrimRight(string(checksumdata), "\n"), binaryFileName); isValid {
+	if isValid := checksum.ValidateSHA256Sum(strings.TrimSuffix(string(checksumdata), "\n"), binaryFileName); isValid {
 		fmt.Println("Checksum validated.")
 	} else {
 		fmt.Println("Failed to validate checksum. Deleting the installed client.")

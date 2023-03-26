@@ -12,6 +12,7 @@ import (
 )
 
 var overwriteInstall bool
+var timeout int
 
 // installCmd represents the install command
 var installCmd = &cobra.Command{
@@ -39,6 +40,9 @@ Examples:
 	# Install kubectl version 1.20.0 and overwrite it if it already exists
 	k8senv kubectl install 1.20.0 --overwrite
 
+	# Install kubectl version 1.20.0 aand set timeout to 300 seconds (If internet is slow), Default: 120 seconds
+	k8senv kubectl install 1.20.0 --timeout=300
+
 Supported version formats:
 	v1.20.3
 	1.20.3	# Defaults to v1.20.3
@@ -49,7 +53,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to install e.g. v1.20.3")
 			os.Exit(1)
 		}
-		_ = install.InstallKubectl(args[0], overwriteInstall)
+		_ = install.InstallKubectl(args[0], overwriteInstall, timeout)
 
 	},
 }
@@ -66,6 +70,7 @@ func init() {
 
 	// installKubectlCmd.PersistentFlags().BoolP("overwrite", "f", false, "Overwrite or re-install existing version")
 	installKubectlCmd.PersistentFlags().BoolVarP(&overwriteInstall, "overwrite", "f", false, "Overwrite or re-install existing version")
+	installKubectlCmd.PersistentFlags().IntVarP(&timeout, "timeout", "t", 120, "Timeout in seconds [DEFAULT: 120 seconds]")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
