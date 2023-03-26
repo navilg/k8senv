@@ -74,7 +74,7 @@ func InstallKubectl(version string, overwrite bool) error {
 	binaryFileName := *dotK8sEnvPath + "/kubectl." + version
 
 	if _, err := os.Stat(binaryFileName); err == nil && !overwrite {
-		fmt.Println("kubectl version", version, "is already installed.")
+		fmt.Println("kubectl version", version, "is already installed. Use command `k8senv use kubectl", version+"` to use it.")
 		fmt.Println("If existing client doesnot work properly or is corrupted, Use --overwrite flag to overwrite/re-install the existing one.")
 		return nil
 	}
