@@ -16,28 +16,34 @@ var overwriteInstall bool
 // installCmd represents the install command
 var installCmd = &cobra.Command{
 	Use:   "install",
-	Short: "Install a version of kubectl, helm or velero",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("install called")
-	},
+	Short: "Install a version of kubectl, helm or velero client",
+	// Long:  ``,
+	// Run: func(cmd *cobra.Command, args []string) {
+	// 	fmt.Println("install called")
+	// },
 }
 
 // installCmd represents the install command
 var kubectlInstallCmd = &cobra.Command{
-	Use:   "install",
-	Short: "Install a version of kubectl, helm or velero",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Use:   "install VERSION",
+	Short: "Install a version of kubectl",
+	Long: `Install a version of kubectl client
+	
+Examples:
+	# Install kubectl version 1.26.2
+	k8senv kubectl install v1.26.2
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	# Install latest available stable version of kubectl
+	k8senv kubectl install latest
+
+	# Install kubectl version 1.20.0 and overwrite it if it already exists
+	k8senv kubectl install 1.20.0 --overwrite
+
+Supported version formats:
+	v1.20.3
+	1.20.3	# Defaults to v1.20.3
+	1.20 	# Defaults to v1.20.0
+	1 	# Defaults to v1.0.0`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 1 {
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to install e.g. v1.20.3")
