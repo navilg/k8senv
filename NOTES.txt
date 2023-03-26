@@ -1,6 +1,6 @@
 Commands variant:
 
-k8senv install kubectl
+k8senv install kubectl - DONE
 k8senv install velero
 k8senv install helm
 
@@ -8,7 +8,7 @@ k8senv use kubectl
 k8senv use velero
 k8senv use helm
 
-k8senv kubectl install
+k8senv kubectl install - DONE
 k8senv kubectl use
 
 k8senv velero install
