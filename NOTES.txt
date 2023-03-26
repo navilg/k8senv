@@ -1,0 +1,20 @@
+Commands variant:
+
+k8senv install kubectl
+k8senv install velero
+k8senv install helm
+
+k8senv use kubectl
+k8senv use velero
+k8senv use helm
+
+k8senv kubectl install
+k8senv kubectl use
+
+k8senv velero install
+k8senv velero use
+
+k8senv helm install
+k8senv helm use
+
+

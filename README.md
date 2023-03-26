@@ -10,23 +10,24 @@ This small tool is to help manage different versions of Kubernetes clients. Kube
 
 ## How to install/setup
 
-1. Create a directory .k8senv in home directory `mkdir $HOME/.k8senv`
-2. Clone this repository into `.k8senv` directory
+1. Create a directory .k8senv/bin in home directory `mkdir -p ~/.k8senv/bin`
+2. Download `k8senv` tool into `.k8senv/bin` directory
 
 ```
-git clone --depth=1 https://github.com/navilg/k8senv.git ~/.k8senv
+cd ~/.k8senv/bin
+curl -LO https://raw.githubusercontent.com/navilg/k8senv/main/bin/k8senv
+chmod +x k8senv
 ```
 
-3. Add ~/.k8senv/bin to your $PATH
+3. Add `~/.k8senv/bin` directory to your `PATH` environment variable
 
 ```
 export PATH="$HOME/.k8senv/bin:$PATH"
 echo 'export PATH="$HOME/.k8senv/bin:$PATH"' >> ~/.bashrc
 ```
 
-Or, You can create a symlink to a directory already in PATH
-
 ```
-sudo ln -s ~/.k8senv/bin/* /usr/local/bin
 which k8senv
 ```
+
+**Under development**
