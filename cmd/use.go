@@ -43,7 +43,7 @@ Supported version formats:
 	1 	# Defaults to v1.0.0`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 1 {
-			fmt.Println("Exactly one argumanet is required. Provide kubectl version to install e.g. v1.20.3")
+			fmt.Println("Exactly one argumanet is required. Provide kubectl version to use e.g. v1.20.3")
 			os.Exit(1)
 		}
 		_ = use.UseKubectl(args[0])
