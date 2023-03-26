@@ -1,27 +1,34 @@
 Commands variant:
 
-k8senv install kubectl - DONE
+k8senv install kubectl              - DONE
 k8senv install velero
 k8senv install helm
 
-k8senv use kubectl
+k8senv use kubectl                  - DONE
 k8senv use velero
 k8senv use helm
 
-k8senv list kubectl
-k8senv list kubectl
-k8senv list kubectl
+k8senv list kubectl                 - DONE
+k8senv list velero
+k8senv list helm
 
-k8senv kubectl install - DONE
-k8senv kubectl use
-k8senv list kubectl
+k8senv remove kubectl               - DONE
+k8senv remove velero
+k8senv remove helm
+
+k8senv kubectl install              - DONE
+k8senv kubectl use                  - DONE
+k8senv kubectl list                 - DONE
+k8senv kubectl remove               - DONE
 
 k8senv velero install
 k8senv velero use
-k8senv list velero
+k8senv velero list
+k8senv velero remove
 
 k8senv helm install
 k8senv helm use
-k8senv list helm
+k8senv helm list
+k8senv helm remove
 
 
