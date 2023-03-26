@@ -15,9 +15,19 @@ This small tool is to help manage different versions of Kubernetes clients. Kube
 1. Create a directory .k8senv/bin in home directory `mkdir -p ~/.k8senv/bin`
 2. Download `k8senv` tool into `.k8senv/bin` directory
 
+To download latest `k8senv` tool built from main branch
+
 ```
 cd ~/.k8senv/bin
 curl -LO https://raw.githubusercontent.com/navilg/k8senv/main/bin/k8senv
+chmod +x k8senv
+```
+
+To download specific version of `k8senv`. For e.g. To download version `0.1.0`
+
+```
+cd ~/.k8senv/bin
+curl -LO https://github.com/navilg/k8senv/raw/0.1.0/bin/k8senv
 chmod +x k8senv
 ```
 
