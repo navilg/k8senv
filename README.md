@@ -30,4 +30,28 @@ echo 'export PATH="$HOME/.k8senv/bin:$PATH"' >> ~/.bashrc
 which k8senv
 ```
 
+## Usage
+
+**Install a kubectl version**
+
+Any of below commands can be used to download 1.26.2 version of kubectl
+
+```
+k8senv install kubectl v1.26.2
+k8senv install kubectl 1.26.2
+k8senv kubectl install v1.26.2
+k8senv install kubectl 1.26.2 --overwrite   # Installs even if it already exists
+k8senv install kubectl latest               # Installs latest stable version of kubectl
+```
+
+**Switch to a version of kubectl**
+
+Any of below commands can be used to switch kubectl version to 1.26.2. If version is not available, It will install it automatically.
+
+```
+k8senv use kubectl v1.26.2
+k8senv use kubectl 1.26.2
+k8senv kubectl use v1.26.2
+```
+
 **Under development**
