@@ -9,6 +9,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/navilg/k8senv/internal/checksum"
 	"github.com/navilg/k8senv/internal/config"
 )
 
@@ -69,6 +70,7 @@ func InstallKubectl(version string, overwrite bool) error {
 	}
 
 	downloadUrl := "https://dl.k8s.io/release/" + version + "/bin/linux/amd64/kubectl"
+	checksumUrl := "https://dl.k8s.io/" + version + "/bin/linux/amd64/kubectl.sha256"
 	binaryFileName := *dotK8sEnvPath + "/kubectl." + version
 
 	if _, err := os.Stat(binaryFileName); err == nil && !overwrite {
@@ -120,6 +122,39 @@ func InstallKubectl(version string, overwrite bool) error {
 	}
 
 	fmt.Println("Installed kubectl version", version)
+	fmt.Println("Validating checksum")
+
+	// Perform HTTP GET request
+	resp, err = client.Get(checksumUrl)
+	if err != nil {
+		fmt.Println("Failed to validate checksum")
+		fmt.Println("Due to: Failed to make HTTP GET request to checksum")
+		fmt.Println(err)
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode/100 != 2 {
+		fmt.Println("Failed to validate checksum")
+		fmt.Println(resp.Status)
+		return err
+	}
+
+	checksumdata, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Failed to validate checksum")
+		fmt.Println(err)
+		return err
+	}
+
+	if isValid := checksum.ValidateSHA256Sum(strings.TrimRight(string(checksumdata), "\n"), binaryFileName); isValid {
+		fmt.Println("Checksum validated.")
+	} else {
+		fmt.Println("Failed to validate checksum. Deleting the installed client.")
+		_ = os.Remove(binaryFileName)
+		return errors.New("Failed to validate checksum of installed file")
+	}
 
 	return nil
 
