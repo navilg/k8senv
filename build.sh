@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-go build -o bin/k8senv *.go
+CGO_ENABLED=0 go build -o bin/k8senv *.go
