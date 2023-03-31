@@ -23,11 +23,11 @@ curl -LO https://raw.githubusercontent.com/navilg/k8senv/main/bin/k8senv
 chmod +x k8senv
 ```
 
-To download specific version of `k8senv`. For e.g. To download version `0.1.0`
+To download specific version of `k8senv`. For e.g. To download version `0.1.1`
 
 ```
 cd ~/.k8senv/bin
-curl -LO https://github.com/navilg/k8senv/raw/0.1.0/bin/k8senv
+curl -LO https://github.com/navilg/k8senv/raw/v0.1.1/bin/k8senv
 chmod +x k8senv
 ```
 
