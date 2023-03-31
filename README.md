@@ -27,7 +27,7 @@ To download specific version of `k8senv`. For e.g. To download version `0.1.2`
 
 ```
 cd ~/.k8senv/bin
-curl -LO https://github.com/navilg/k8senv/raw/v0.1.2/bin/k8senv
+curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.2/k8senv
 chmod +x k8senv
 ```
 
