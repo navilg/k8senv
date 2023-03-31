@@ -37,7 +37,7 @@ func UseKubectl(version string) error {
 	if _, err := os.Stat(binaryFileName); os.IsNotExist(err) {
 		fmt.Println("kubectl version", version, "is not installed.")
 		fmt.Println("Installing")
-		install.InstallKubectl(version, false, 120)
+		install.InstallKubectl(version, false, 120, "")
 	}
 
 	if _, err := os.Lstat(kubectlBinaryPath); err == nil {

@@ -54,7 +54,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to install e.g. v1.20.3")
 			os.Exit(1)
 		}
-		_ = install.InstallKubectl(args[0], overwriteInstall, timeout)
+		_ = install.InstallKubectl(args[0], overwriteInstall, timeout, proxy)
 
 	},
 }
@@ -128,6 +128,8 @@ func init() {
 	// and all subcommands, e.g.:
 	// kubectlCmd.PersistentFlags().String("foo", "", "A help for foo")
 	kubectlInstallCmd.PersistentFlags().BoolVarP(&overwriteInstall, "overwrite", "f", false, "Overwrite or re-install existing version")
+	kubectlInstallCmd.PersistentFlags().IntVarP(&timeout, "timeout", "t", 120, "Timeout in seconds [DEFAULT: 120 seconds]")
+	kubectlInstallCmd.PersistentFlags().StringVarP(&proxy, "proxy", "p", "", "HTTP/HTTPS proxy to use for downloading clients from its source")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
