@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -14,7 +15,7 @@ import (
 	"github.com/navilg/k8senv/internal/config"
 )
 
-func InstallKubectl(version string, overwrite bool, timeout int) error {
+func InstallKubectl(version string, overwrite bool, timeout int, proxy string) error {
 	latestVersionUrl := "https://storage.googleapis.com/kubernetes-release/release/stable.txt"
 	dotK8sEnvPath := config.GetDotK8senvPath()
 
@@ -33,6 +34,16 @@ func InstallKubectl(version string, overwrite bool, timeout int) error {
 				r.URL.Opaque = r.URL.Path
 				return nil
 			},
+		}
+
+		if proxy != "" {
+			proxy, err := url.Parse(proxy)
+			if err != nil {
+				fmt.Println("Failed to fetch latest kubectl version")
+				fmt.Println(err)
+				return err
+			}
+			client.Transport = &http.Transport{Proxy: http.ProxyURL(proxy)}
 		}
 
 		resp, err := client.Get(latestVersionUrl)
@@ -91,6 +102,16 @@ func InstallKubectl(version string, overwrite bool, timeout int) error {
 			r.URL.Opaque = r.URL.Path
 			return nil
 		},
+	}
+
+	if proxy != "" {
+		proxy, err := url.Parse(proxy)
+		if err != nil {
+			fmt.Println("Failed to fetch latest kubectl version")
+			fmt.Println(err)
+			return err
+		}
+		client.Transport = &http.Transport{Proxy: http.ProxyURL(proxy)}
 	}
 
 	// Perform HTTP GET request
