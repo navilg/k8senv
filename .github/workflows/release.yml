@@ -69,7 +69,8 @@ jobs:
       - name: 🌡️ Test
         run: chmod +x k8senv-macos-x86_64 && ./k8senv-macos-x86_64 -h
 
-  release:
+  pre-release:
+    if: startsWith(github.ref, 'refs/tags/v0.') || endsWith(github.ref, '-beta') || endsWith(github.ref, '-alpha')
     name: Release
     needs: [test-linux, test-macos]
     runs-on: ubuntu-latest
@@ -82,6 +83,30 @@ jobs:
           name: k8senv
       # Release, upload files
       # https://github.com/marketplace/actions/gh-release
+      - name: ✨ Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            k8senv-linux-x86_64
+            k8senv-linux-arm64
+            k8senv-macos-x86_64
+            k8senv-macos-arm64
+          generate_release_notes: true
+          prerelease: true
+  release:
+    if: !startsWith(github.ref, 'refs/tags/v0.') && !endsWith(github.ref, '-beta') && !endsWith(github.ref, '-alpha')
+    name: Release
+    needs: [test-linux, test-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+      - name: 📥 Download
+        uses: actions/download-artifact@v3
+        with:
+          name: k8senv
+    # Release, upload files
+    # https://github.com/marketplace/actions/gh-release
       - name: ✨ Release
         uses: softprops/action-gh-release@v1
         with:
