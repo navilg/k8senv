@@ -1,18 +1,21 @@
 package install
 
 import (
+	"archive/tar"
+	"compress/gzip"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
-	"log"
-	"net/http"
-	"net/url"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/navilg/k8senv/internal/checksum"
 	"github.com/navilg/k8senv/internal/config"
+	"github.com/navilg/k8senv/internal/download"
 )
 
 func InstallKubectl(version string, overwrite bool, timeout int, proxy string) error {
@@ -28,40 +31,9 @@ func InstallKubectl(version string, overwrite bool, timeout int, proxy string) e
 		// version value is latest
 
 		fmt.Println("Fetching latest stable version")
-		client := http.Client{
-			Timeout: 30 * time.Second,
-			CheckRedirect: func(r *http.Request, via []*http.Request) error {
-				r.URL.Opaque = r.URL.Path
-				return nil
-			},
-		}
-
-		if proxy != "" {
-			proxy, err := url.Parse(proxy)
-			if err != nil {
-				fmt.Println("Failed to fetch latest kubectl version")
-				fmt.Println(err)
-				return err
-			}
-			client.Transport = &http.Transport{Proxy: http.ProxyURL(proxy)}
-		}
-
-		resp, err := client.Get(latestVersionUrl)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer resp.Body.Close()
-
-		if resp.StatusCode/100 != 2 {
-			fmt.Println("Failed to fetch latest kubectl version")
-			fmt.Println(err)
-			return err
-		}
-
-		data, err := ioutil.ReadAll(resp.Body)
+		data, err := download.Download(latestVersionUrl, 30, proxy)
 		if err != nil {
 			fmt.Println("Failed to fetch latest kubectl version")
-			fmt.Println(err)
 			return err
 		}
 
@@ -95,47 +67,9 @@ func InstallKubectl(version string, overwrite bool, timeout int, proxy string) e
 	fmt.Println("Downloading kubectl version", version)
 	fmt.Println("Download in progress... It may take upto 2 minutes depending on internet speed.")
 
-	// Create http client
-	client := http.Client{
-		Timeout: time.Duration(timeout) * time.Second,
-		CheckRedirect: func(r *http.Request, via []*http.Request) error {
-			r.URL.Opaque = r.URL.Path
-			return nil
-		},
-	}
-
-	if proxy != "" {
-		proxy, err := url.Parse(proxy)
-		if err != nil {
-			fmt.Println("Failed to fetch latest kubectl version")
-			fmt.Println(err)
-			return err
-		}
-		client.Transport = &http.Transport{Proxy: http.ProxyURL(proxy)}
-	}
-
-	// Perform HTTP GET request
-	resp, err := client.Get(downloadUrl)
+	data, err := download.Download(downloadUrl, time.Duration(timeout), proxy)
 	if err != nil {
 		fmt.Println("Failed to install kubectl version", version)
-		fmt.Println("Due to: Failed to make HTTP GET request")
-		fmt.Println(err)
-		return err
-	}
-
-	defer resp.Body.Close()
-
-	if resp.StatusCode/100 != 2 {
-		fmt.Println("Failed to install kubectl version", version)
-		fmt.Println(resp.Status)
-		return err
-	}
-
-	data, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Failed to install kubectl version", version)
-		fmt.Println("Due to: Failed to read received response")
-		fmt.Println(err)
 		return err
 	}
 
@@ -147,29 +81,12 @@ func InstallKubectl(version string, overwrite bool, timeout int, proxy string) e
 	}
 
 	fmt.Println("Downloaded kubectl version", version)
+
 	fmt.Println("Validating checksum")
 
-	// Perform HTTP GET request
-	resp, err = client.Get(checksumUrl)
+	checksumdata, err := download.Download(checksumUrl, 30, proxy)
 	if err != nil {
 		fmt.Println("Failed to validate checksum")
-		fmt.Println("Due to: Failed to make HTTP GET request to checksum")
-		fmt.Println(err)
-		return err
-	}
-
-	defer resp.Body.Close()
-
-	if resp.StatusCode/100 != 2 {
-		fmt.Println("Failed to validate checksum")
-		fmt.Println(resp.Status)
-		return err
-	}
-
-	checksumdata, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Failed to validate checksum")
-		fmt.Println(err)
 		return err
 	}
 
@@ -182,5 +99,204 @@ func InstallKubectl(version string, overwrite bool, timeout int, proxy string) e
 	}
 
 	return nil
+}
 
+func InstallVelero(version string, overwrite bool, timeout int, proxy string) error {
+	latestVersionUrl := "https://api.github.com/repos/vmware-tanzu/velero/releases/latest"
+	dotK8sEnvPath := config.GetDotK8senvPath()
+
+	if dotK8sEnvPath == nil {
+		fmt.Println(".k8senv/bin directory is not added in PATH environment variable")
+		return errors.New(".k8senv/bin is not added in PATH environment variable")
+	}
+
+	if version == "latest" {
+		// version value is latest
+
+		fmt.Println("Fetching latest stable version")
+		data, err := download.Download(latestVersionUrl, 30, proxy)
+		if err != nil {
+			fmt.Println("Failed to fetch latest velero client version")
+			return err
+		}
+
+		type latestVeleroVersionInfo struct {
+			TagName string `json:"tag_name"`
+		}
+
+		var latestVeleroVersion latestVeleroVersionInfo
+
+		err = json.Unmarshal(data, &latestVeleroVersion)
+		if err != nil {
+			fmt.Println("Failed to fetch latest velero client version")
+			return err
+		}
+
+		version = string(latestVeleroVersion.TagName)
+		fmt.Println("Latest available stable version of velero client is", version)
+
+	}
+
+	major_minor_patch_vers := strings.Split(version, ".")
+
+	if !strings.HasPrefix(major_minor_patch_vers[0], "v") {
+		version = "v" + version
+	}
+
+	if len(major_minor_patch_vers) == 2 {
+		version = version + ".0"
+	} else if len(major_minor_patch_vers) == 1 {
+		version = version + ".0.0"
+	}
+
+	downloadUrl := "https://github.com/vmware-tanzu/velero/releases/download/" + version + "/velero-" + version + "-linux-amd64.tar.gz"
+	checksumUrl := "https://github.com/vmware-tanzu/velero/releases/download/" + version + "/CHECKSUM"
+	binaryFileName := *dotK8sEnvPath + "/velero." + version
+
+	if _, err := os.Stat(binaryFileName); err == nil && !overwrite {
+		fmt.Println("velero client version", version, "is already installed. Use command `k8senv use velero", version+"` to use it.")
+		fmt.Println("If existing client doesnot work properly or is corrupted, Use --overwrite flag to overwrite/re-install the existing one.")
+		return nil
+	}
+
+	fmt.Println("Downloading velero package version", version)
+	tempDir, err := ioutil.TempDir("/tmp", "velero"+version+"*")
+	if err != nil {
+		fmt.Println("Failed to create temporary directory")
+		fmt.Println(err)
+	}
+
+	fmt.Println("Download in progress... It may take upto 2 minutes depending on internet speed.")
+
+	data, err := download.Download(downloadUrl, time.Duration(timeout), proxy)
+	if err != nil {
+		fmt.Println("Failed to install velero client version", version)
+		return err
+	}
+
+	err = ioutil.WriteFile(tempDir+"/velero-"+version+"-linux-amd64.tar.gz", data, 0750)
+	if err != nil {
+		fmt.Println("Failed to install velero client version", version)
+		fmt.Println(err)
+		return err
+	}
+
+	fmt.Println("Installation package downloaded for velero client version", version)
+
+	fmt.Println("Validating checksum")
+
+	checksumdata, err := download.Download(checksumUrl, 30, proxy)
+	if err != nil {
+		fmt.Println("Failed to validate checksum")
+		return err
+	}
+
+	var isChecksumValidated bool = false
+
+	for _, line := range strings.Split(string(checksumdata), "\n") {
+		words := strings.Fields(line)
+		if len(words) < 2 {
+			continue
+		}
+		if words[1] == "velero-"+version+"-linux-amd64.tar.gz" {
+			if checksum.ValidateSHA256Sum(strings.TrimSuffix(string(words[0]), "\n"), tempDir+"/velero-"+version+"-linux-amd64.tar.gz") {
+				isChecksumValidated = true
+			}
+			break
+		}
+	}
+
+	if isChecksumValidated {
+		fmt.Println("Checksum validated.")
+	} else {
+		fmt.Println("Failed to validate checksum. Deleting the downloaded package.")
+		_ = os.Remove(tempDir + "/velero-" + version + "-linux-amd64.tar.gz")
+		return errors.New("Failed to validate checksum of downloaded file")
+	}
+
+	// Gun-Unzipping
+
+	fmt.Println("Unzipping the package")
+	reader, err := os.Open(tempDir + "/velero-" + version + "-linux-amd64.tar.gz")
+	if err != nil {
+		fmt.Println("Failed to unzip the package")
+		fmt.Println(err)
+		return err
+	}
+	defer reader.Close()
+
+	archive, err := gzip.NewReader(reader)
+	if err != nil {
+		fmt.Println("Failed to unzip the package")
+		fmt.Println(err)
+		return err
+	}
+	defer archive.Close()
+
+	target := filepath.Join(tempDir+"/velero-"+version+"-linux-amd64.tar", archive.Name)
+	writer, err := os.Create(target)
+	if err != nil {
+		fmt.Println("Failed to unzip the package")
+		fmt.Println(err)
+		return err
+	}
+	defer writer.Close()
+
+	_, err = io.Copy(writer, archive)
+	if err != nil {
+		fmt.Println("Failed to unzip the package")
+		fmt.Println(err)
+		return err
+	}
+
+	// Untaring file
+	fmt.Println("Getting the velero client")
+	reader, err = os.Open(tempDir + "/velero-" + version + "-linux-amd64.tar")
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	defer reader.Close()
+	tarReader := tar.NewReader(reader)
+
+	for {
+		header, err := tarReader.Next()
+		if err == io.EOF {
+			fmt.Println("Failed to get velero client")
+			fmt.Println("Binary file not present in package")
+			break
+		} else if err != nil {
+			fmt.Println("Failed to get velero client")
+			fmt.Println(err)
+			return err
+		}
+		if header.FileInfo().IsDir() {
+			continue
+		}
+
+		if filepath.Base(header.Name) != "velero" {
+			continue
+		}
+
+		file, err := os.OpenFile(binaryFileName, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0750)
+		if err != nil {
+			fmt.Println("Failed to install velero client")
+			fmt.Println(err)
+			return err
+		}
+		defer file.Close()
+
+		_, err = io.Copy(file, tarReader)
+		if err != nil {
+			fmt.Println("Failed to install velero client")
+			fmt.Println(err)
+			return err
+		}
+
+		break
+	}
+
+	fmt.Println("Installed velero client version", version)
+
+	return nil
 }
