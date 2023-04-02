@@ -55,7 +55,10 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide velero client version to install e.g. v1.10.2")
 			os.Exit(1)
 		}
-		_ = install.InstallVelero(args[0], overwriteInstall, timeout, proxy)
+		err := install.InstallVelero(args[0], overwriteInstall, timeout, proxy)
+		if err != nil {
+			os.Exit(1)
+		}
 
 	},
 }
@@ -80,7 +83,10 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide velero client version to use e.g. v1.10.2")
 			os.Exit(1)
 		}
-		// _ = use.UseVelero(args[0])
+		// err := use.UseVelero(args[0])
+		// if err != nil {
+		// 	os.Exit(1)
+		// }
 	},
 }
 
@@ -96,7 +102,10 @@ Examples:
 			fmt.Println("No argument is required for listing versions")
 			os.Exit(1)
 		}
-		// _ = list.ListVelero()
+		// err := list.ListVelero()
+		// if err != nil {
+		// 	os.Exit(1)
+		// }
 	},
 }
 
@@ -112,7 +121,10 @@ Examples:
 			fmt.Println("Exactly one argumanet is required. Provide velero client version to remove e.g. v1.10.2")
 			os.Exit(1)
 		}
-		// _ = remove.RemoveVelero(args[0])
+		// err := remove.RemoveVelero(args[0])
+		// if err != nil {
+		// 	os.Exit(1)
+		// }
 	},
 }
 

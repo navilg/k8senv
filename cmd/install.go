@@ -54,7 +54,10 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to install e.g. v1.20.3")
 			os.Exit(1)
 		}
-		_ = install.InstallKubectl(args[0], overwriteInstall, timeout, proxy)
+		err := install.InstallKubectl(args[0], overwriteInstall, timeout, proxy)
+		if err != nil {
+			os.Exit(1)
+		}
 
 	},
 }
@@ -87,7 +90,10 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide velero version to install e.g. v1.20.3")
 			os.Exit(1)
 		}
-		_ = install.InstallVelero(args[0], overwriteInstall, timeout, proxy)
+		err := install.InstallVelero(args[0], overwriteInstall, timeout, proxy)
+		if err != nil {
+			os.Exit(1)
+		}
 
 	},
 }

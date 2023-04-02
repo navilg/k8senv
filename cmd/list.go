@@ -39,7 +39,10 @@ Examples:
 			fmt.Println("No argument is required for listing versions")
 			os.Exit(1)
 		}
-		_ = list.ListKubectl()
+		err := list.ListKubectl()
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

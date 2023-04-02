@@ -46,7 +46,10 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to use e.g. v1.20.3")
 			os.Exit(1)
 		}
-		_ = use.UseKubectl(args[0])
+		err := use.UseKubectl(args[0])
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 
