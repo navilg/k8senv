@@ -71,7 +71,7 @@ jobs:
 
   pre-release:
     if: startsWith(github.ref, 'refs/tags/v0.') || endsWith(github.ref, '-beta') || endsWith(github.ref, '-alpha')
-    name: Release
+    name: Pre-release
     needs: [test-linux, test-macos]
     runs-on: ubuntu-latest
     steps:
