@@ -26,7 +26,7 @@ jobs:
 
       # Test binary
       - name: 🌡️ Test
-        run: chmod +x k8senv-linux-x86_64 && k8senv-linux-x86_64 -h
+        run: chmod +x k8senv-linux-x86_64 && ./k8senv-linux-x86_64 -h
 
       # Upload binaries
       # https://github.com/marketplace/actions/upload-a-build-artifact
