@@ -1,0 +1,25 @@
+name: "CI"
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: CI/CD Test
+    # https://github.com/actions/virtual-environments/
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+
+      - name: 🔧 Setup go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+
+      # Test
+      - name: 🌡️ Test
+        run: go run main.go -h
