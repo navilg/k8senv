@@ -15,21 +15,85 @@ This small tool is to help manage different versions of Kubernetes clients. Kube
 1. Create a directory .k8senv/bin in home directory `mkdir -p ~/.k8senv/bin`
 2. Download `k8senv` tool into `.k8senv/bin` directory
 
-To download latest `k8senv` tool built from main branch
+<details>
+<summary><b>Linux</b></summary>
 
+* [x86_64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-x86_64) Intel or AMD 64-Bit CPU
+
+Download latest `k8senv` tool:
 ```
 cd ~/.k8senv/bin
-curl -LO https://raw.githubusercontent.com/navilg/k8senv/main/bin/k8senv
+curl -L https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-x86_64 -o k8senv
 chmod +x k8senv
 ```
 
-To download specific version of `k8senv`. For e.g. To download version `0.1.2`
+Download specific version of `k8senv`. For e.g. To download version `0.1.3`:
 
 ```
 cd ~/.k8senv/bin
-curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.2/k8senv
+curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-linux-x86_64 -o k8senv
 chmod +x k8senv
 ```
+
+* [arm64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-arm64) Arm-based 64-Bit CPU (i.e. in Raspberry Pi)
+
+Download latest `k8senv` tool:
+```
+cd ~/.k8senv/bin
+curl -L https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-arm64 -o k8senv
+chmod +x k8senv
+```
+
+Download specific version of `k8senv`. For e.g. To download version `0.1.3`:
+
+```
+cd ~/.k8senv/bin
+curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-linux-arm64 -o k8senv
+chmod +x k8senv
+```
+
+</details>
+
+<details>
+<summary><b>macOS</b></summary>
+
+* [x86_64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-macos-x86_64) Intel or AMD 64-Bit CPU
+
+Download latest `k8senv` tool:
+```
+cd ~/.k8senv/bin
+curl -L https://github.com/navilg/k8senv/releases/latest/download/k8senv-macos-x86_64 -o k8senv
+chmod +x k8senv
+```
+
+Download specific version of `k8senv`. For e.g. To download version `0.1.3`:
+
+```
+cd ~/.k8senv/bin
+curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-macos-x86_64 -o k8senv
+chmod +x k8senv
+```
+
+* [arm64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-macos-arm64) Arm-based 64-Bit CPU (i.e. in Raspberry Pi)
+
+Download latest `k8senv` tool:
+```
+cd ~/.k8senv/bin
+curl -L https://github.com/navilg/k8senv/releases/latest/download/k8senv-macos-arm64 -o k8senv
+chmod +x k8senv
+```
+
+Download specific version of `k8senv`. For e.g. To download version `0.1.3`:
+
+```
+cd ~/.k8senv/bin
+curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-macos-arm64 -o k8senv
+chmod +x k8senv
+```
+
+</details>
+
+
 
 3. Add `~/.k8senv/bin` directory to your `PATH` environment variable
 
