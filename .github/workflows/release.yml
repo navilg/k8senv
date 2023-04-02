@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    name: Build
+    # https://github.com/actions/virtual-environments/
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+
+      # https://github.com/marketplace/actions/setup-go-environment
+      - name: 🔧 Setup go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+
+      - name: 🍳 Build
+        run: bash build.sh
+
+      # Test binary
+      - name: 🌡️ Test
+        run: chmod +x k8senv-linux-x86_64 && k8senv-linux-x86_64 -h
+
+      # Upload binaries
+      # https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: 📤 Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: k8senv
+          path: k8senv*
+          retention-days: 1
+
+  test-linux:
+    name: Test Linux
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+      # Download binaries
+      # https://github.com/marketplace/actions/download-a-build-artifact
+      - name: 📥 Download
+        uses: actions/download-artifact@v3
+        with:
+          name: k8senv
+      # Test binary
+      - name: 🌡️ Test
+        run: chmod +x k8senv-linux-x86_64 && ./k8senv-linux-x86_64 -h
+
+  test-macos:
+    name: Test macOS
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+      - name: 📥 Download
+        uses: actions/download-artifact@v3
+        with:
+          name: k8senv
+      # Test binary
+      - name: 🌡️ Test
+        run: chmod +x k8senv-macos-x86_64 && ./k8senv-macos-x86_64 -h
+
+  release:
+    name: Release
+    needs: [test-linux, test-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+      - name: 📥 Download
+        uses: actions/download-artifact@v3
+        with:
+          name: k8senv
+      # Release, upload files
+      # https://github.com/marketplace/actions/gh-release
+      - name: ✨ Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            k8senv-linux-x86_64
+            k8senv-linux-arm64
+            k8senv-macos-x86_64
+            k8senv-macos-arm64
+          generate_release_notes: true
