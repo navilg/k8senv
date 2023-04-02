@@ -69,10 +69,25 @@ jobs:
       - name: 🌡️ Test
         run: chmod +x k8senv-macos-x86_64 && ./k8senv-macos-x86_64 -h
 
+  test-version:
+    name: Test version
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+         #!/usr/bin/env bash
+         version=$(./k8senv-linux-x86_64 version)
+         tag=$(echo "${{ github.ref }}" | rev | cut -d "/" -f 1 | rev)
+         echo "$version" | grep -o $tag
+         if [ $? -ne 0 ]; then
+            echo "Tag version and release doesnot match"
+            exit 1
+         fi
+
   pre-release:
     if: startsWith(github.ref, 'refs/tags/v0.') || endsWith(github.ref, '-beta') || endsWith(github.ref, '-alpha')
     name: Pre-release
-    needs: [test-linux, test-macos]
+    needs: [test-linux, test-macos, test-version]
     runs-on: ubuntu-latest
     steps:
       - name: 🛎️ Checkout

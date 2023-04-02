@@ -22,4 +22,4 @@ jobs:
 
       # Test
       - name: 🌡️ Test
-        run: go run main.go -h
+        run: go run main.go -h && go run main.go version
