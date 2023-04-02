@@ -2,6 +2,8 @@
 
 set -e
 
+# Build
+
 bash build.sh
 chmod +x ./k8senv-linux-x86_64
 echo
@@ -15,6 +17,8 @@ echo "Testing K8senv version"
 k8senv version
 echo "✅"
 echo
+
+# Test kubectl
 
 echo "Testing kubectl install"
 k8senv install kubectl v1.26.2 --timeout 300
@@ -42,8 +46,10 @@ k8senv list kubectl
 echo "✅"
 echo
 
+# Test velero
+
 echo "Testing velero install"
-k8senv install kubectl v1.10.2 --timeout 300
-k8senv kubectl install 1.8.1 --timeout 300
+k8senv install velero v1.10.2 --timeout 300
+k8senv velero install 1.8.1 --timeout 300
 echo "✅"
 echo
