@@ -62,6 +62,16 @@ which k8senv
 
 ## Usage
 
+```
+k8senv [CLIENT] [VERB] [VERSION]
+
+# [CLIENT] can be kubectl, velero or helm
+# [VERB] can be install, use, list or remove
+# [VERSION] can be any client's version in format v*.*.*
+```
+
+Examples:
+
 **Install a kubectl version**
 
 Any of below commands can be used to download 1.26.2 version of kubectl
@@ -103,5 +113,7 @@ k8senv remove kubectl v1.26.2
 k8senv remove kubectl 1.26.2
 k8senv kubectl remove v1.26.2
 ```
+
+**Similar command can be used to install, use, list and remove velero and helm clients.**
 
 **Under development**
