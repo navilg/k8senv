@@ -81,8 +81,15 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      # Download binaries
+      # https://github.com/marketplace/actions/download-a-build-artifact
+      - name: 📥 Download
+        uses: actions/download-artifact@v3
+        with:
+          name: k8senv
       - run: |
          #!/usr/bin/env bash
+         chmod +x k8senv-macos-x86_64
          version=$(./k8senv-linux-x86_64 version)
          tag=$(echo "${{ github.ref }}" | rev | cut -d "/" -f 1 | rev)
          echo "$version" | grep -o $tag
