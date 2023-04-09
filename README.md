@@ -69,8 +69,9 @@ k8senv [VERB] [CLIENT] [VERSION]
 # [CLIENT] can be kubectl, velero or helm
 # [VERSION] can be any client's version in format v*.*.*
 
-example:
+examples:
 k8senv use kubectl v1.23.2
+k8senv install velero v1.8.1
 ```
 
 Examples:
