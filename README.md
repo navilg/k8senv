@@ -63,11 +63,14 @@ which k8senv
 ## Usage
 
 ```
-k8senv [CLIENT] [VERB] [VERSION]
+k8senv [VERB] [CLIENT] [VERSION]
 
-# [CLIENT] can be kubectl, velero or helm
 # [VERB] can be install, use, list or remove
+# [CLIENT] can be kubectl, velero or helm
 # [VERSION] can be any client's version in format v*.*.*
+
+example:
+k8senv use kubectl v1.23.2
 ```
 
 Examples:
