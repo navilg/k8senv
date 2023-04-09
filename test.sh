@@ -11,8 +11,7 @@ echo
 mkdir -p $HOME/.k8senv/bin
 export PATH=$HOME/.k8senv/bin:$PATH
 
-mv ./k8senv-linux-x86_64 $HOME/.k8senv/bin/k8senv
-rm k8senv-linux-arm64
+cp -f ./k8senv-linux-x86_64 $HOME/.k8senv/bin/k8senv
 
 echo "Testing 'k8senv version'"
 k8senv version
