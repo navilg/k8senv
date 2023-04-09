@@ -9,6 +9,7 @@ import (
 
 	"github.com/navilg/k8senv/internal/install"
 	"github.com/navilg/k8senv/internal/list"
+	"github.com/navilg/k8senv/internal/remove"
 	"github.com/navilg/k8senv/internal/use"
 	"github.com/spf13/cobra"
 )
@@ -112,7 +113,7 @@ Examples:
 }
 
 var removeVeleroCmd = &cobra.Command{
-	Use:   "remove VERSION",
+	Use:   "velero VERSION",
 	Short: "Remove an installed versions of velero client",
 	Long: `Remove an installed versions of velero client
 	
@@ -123,10 +124,10 @@ Examples:
 			fmt.Println("Exactly one argumanet is required. Provide velero client version to remove e.g. v1.10.2")
 			os.Exit(1)
 		}
-		// err := remove.RemoveVelero(args[0])
-		// if err != nil {
-		// 	os.Exit(1)
-		// }
+		err := remove.RemoveVelero(args[0])
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

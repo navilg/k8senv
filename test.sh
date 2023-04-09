@@ -12,6 +12,7 @@ mkdir -p $HOME/.k8senv/bin
 export PATH=$HOME/.k8senv/bin:$PATH
 
 mv ./k8senv-linux-x86_64 $HOME/.k8senv/bin/k8senv
+rm k8senv-linux-arm64
 
 echo "Testing 'k8senv version'"
 k8senv version
@@ -46,6 +47,9 @@ echo
 echo "Testing 'k8senv kubectl remove'"
 k8senv kubectl remove v1.23.2
 k8senv list kubectl
+echo "Testing 'k8senv remove kubectl'"
+k8senv remove kubectl 1.26.2
+k8senv list kubectl
 echo "✅"
 echo
 
@@ -70,6 +74,15 @@ echo
 echo "Testing 'k8senv velero list'"
 k8senv velero list
 echo "Testing 'k8senv list velero'"
+k8senv list velero
+echo "✅"
+echo
+
+echo "Testing 'k8senv velero remove'"
+k8senv velero remove v1.10.2
+k8senv list velero
+echo "Testing 'k8senv remove velero'"
+k8senv remove velero 1.8.1
 k8senv list velero
 echo "✅"
 echo
