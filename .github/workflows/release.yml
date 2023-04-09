@@ -28,6 +28,13 @@ jobs:
       - name: 🌡️ Test
         run: chmod +x k8senv-linux-x86_64 && ./k8senv-linux-x86_64 -h
 
+      # K8senv version and Tag name must match
+      - name: Test K8senv version
+        run: |
+          version=$(./k8senv-linux-x86_64 version | cut -d "\"" -f 8)
+          if [ "$version" != "${GITHUB_REF#refs/*/}" ]; then echo "Tag name and K8senv version doesn't match"; exit 1; fi;
+
+
       # Upload binaries
       # https://github.com/marketplace/actions/upload-a-build-artifact
       - name: 📤 Upload
