@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/navilg/k8senv/internal/install"
+	"github.com/navilg/k8senv/internal/list"
 	"github.com/navilg/k8senv/internal/use"
 	"github.com/spf13/cobra"
 )
@@ -103,10 +104,10 @@ Examples:
 			fmt.Println("No argument is required for listing versions")
 			os.Exit(1)
 		}
-		// err := list.ListVelero()
-		// if err != nil {
-		// 	os.Exit(1)
-		// }
+		err := list.ListVelero()
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

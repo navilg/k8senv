@@ -66,3 +66,10 @@ k8senv velero use 1.10.2
 velero version --client-only
 echo "✅"
 echo
+
+echo "Testing 'k8senv velero list'"
+k8senv velero list
+echo "Testing 'k8senv list velero'"
+k8senv list velero
+echo "✅"
+echo
