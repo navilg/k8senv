@@ -109,7 +109,7 @@ Examples:
 }
 
 var removeKubectlCmd = &cobra.Command{
-	Use:   "remove VERSION",
+	Use:   "kubectl VERSION",
 	Short: "Remove an installed versions of kubectl",
 	Long: `Remove an installed versions of kubectl
 	
