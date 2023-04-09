@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/navilg/k8senv/internal/install"
+	"github.com/navilg/k8senv/internal/use"
 	"github.com/spf13/cobra"
 )
 
@@ -69,10 +70,10 @@ var useVeleroCmd = &cobra.Command{
 	Long: `Switch to a version of velero client
 	
 Examples:
-	# Switch to velero client version 1.10.2
+	# Switch to velero version 1.10.2
 	k8senv use velero v1.10.2
 	k8senv use velero 1.10.2
-
+	
 Supported version formats:
 	v1.10.2
 	1.10.2	# Defaults to v1.10.2
@@ -83,10 +84,10 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide velero client version to use e.g. v1.10.2")
 			os.Exit(1)
 		}
-		// err := use.UseVelero(args[0])
-		// if err != nil {
-		// 	os.Exit(1)
-		// }
+		err := use.UseVelero(args[0])
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

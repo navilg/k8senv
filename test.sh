@@ -13,34 +13,37 @@ export PATH=$HOME/.k8senv/bin:$PATH
 
 mv ./k8senv-linux-x86_64 $HOME/.k8senv/bin/k8senv
 
-echo "Testing K8senv version"
+echo "Testing 'k8senv version'"
 k8senv version
 echo "✅"
 echo
 
 # Test kubectl
 
-echo "Testing kubectl install"
-k8senv install kubectl v1.26.2 --timeout 300
-k8senv kubectl install 1.23.2 --timeout 300
+echo "Testing 'k8senv install kubectl'"
+k8senv install kubectl v1.26.2 --timeout 300 --overwrite
+echo "Testing 'k8senv kubectl install'"
+k8senv kubectl install 1.23.2 --timeout 300 --overwrite
 echo "✅"
 echo
 
-echo "Testing kubectl use"
+echo "Testing 'k8senv use kubectl'"
 k8senv use kubectl v1.26.2
 kubectl version --client
-k8senv kubectl use v1.23.2
+echo "Testing 'k8senv kubectl use'"
+k8senv kubectl use 1.23.2
 kubectl version --client
 echo "✅"
 echo
 
-echo "Testing kubectl list"
+echo "Testing 'k8senv kubectl list'"
 k8senv kubectl list
+echo "Testing 'k8senv list kubectl'"
 k8senv list kubectl
 echo "✅"
 echo
 
-echo "Testing kubectl remove"
+echo "Testing 'k8senv kubectl remove'"
 k8senv kubectl remove v1.23.2
 k8senv list kubectl
 echo "✅"
@@ -48,8 +51,18 @@ echo
 
 # Test velero
 
-echo "Testing velero install"
-k8senv install velero v1.10.2 --timeout 300
-k8senv velero install 1.8.1 --timeout 300
+echo "Testing 'k8senv install velero'"
+k8senv install velero v1.10.2 --timeout 300 --overwrite
+echo "Testing 'k8senv velero install'"
+k8senv velero install 1.8.1 --timeout 300 --overwrite
+echo "✅"
+echo
+
+echo "Testing 'k8senv use velero'"
+k8senv use velero v1.8.1
+velero version --client-only
+echo "Testing 'k8senv velero use'"
+k8senv velero use 1.10.2
+velero version --client-only
 echo "✅"
 echo
