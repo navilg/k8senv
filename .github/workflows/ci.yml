@@ -22,4 +22,7 @@ jobs:
 
       # Test
       - name: 🌡️ Test
-        run: go run main.go -h && go run main.go version
+        run: |
+          go run main.go -h && go run main.go version
+          chmod +x test.sh
+          ./test.sh

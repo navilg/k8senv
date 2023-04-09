@@ -46,13 +46,44 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to use e.g. v1.20.3")
 			os.Exit(1)
 		}
-		_ = use.UseKubectl(args[0])
+		err := use.UseKubectl(args[0])
+		if err != nil {
+			os.Exit(1)
+		}
+	},
+}
+
+var veleroUseCmd = &cobra.Command{
+	Use:   "use VERSION",
+	Short: "Switch to a version of velero client",
+	Long: `Switch to a version of velero client
+	
+Examples:
+	# Switch to velero version 1.10.2
+	k8senv velero use v1.10.2
+	k8senv velero use 1.10.2
+	
+Supported version formats:
+	v1.10.2
+	1.10.2	# Defaults to v1.10.2
+	1.10 	# Defaults to v1.10.0
+	1 	# Defaults to v1.0.0`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 1 {
+			fmt.Println("Exactly one argumanet is required. Provide velero version to use e.g. v1.10.2")
+			os.Exit(1)
+		}
+		err := use.UseVelero(args[0])
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(useCmd)
 	kubectlCmd.AddCommand(kubectUseCmd)
+	veleroCmd.AddCommand(veleroUseCmd)
 
 	// Here you will define your flags and configuration settings.
 

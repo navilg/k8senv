@@ -15,10 +15,7 @@ This small tool is to help manage different versions of Kubernetes clients. Kube
 1. Create a directory .k8senv/bin in home directory `mkdir -p ~/.k8senv/bin`
 2. Download `k8senv` tool into `.k8senv/bin` directory
 
-<details>
-<summary><b>Linux</b></summary>
-
-* [x86_64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-x86_64) Intel or AMD 64-Bit CPU
+[x86_64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-x86_64) Intel or AMD 64-Bit CPU
 
 Download latest `k8senv` tool:
 ```
@@ -35,7 +32,7 @@ curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-linux-
 chmod +x k8senv
 ```
 
-* [arm64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-arm64) Arm-based 64-Bit CPU (i.e. in Raspberry Pi)
+[arm64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-arm64) Arm-based 64-Bit CPU (i.e. in Raspberry Pi)
 
 Download latest `k8senv` tool:
 ```
@@ -52,49 +49,6 @@ curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-linux-
 chmod +x k8senv
 ```
 
-</details>
-
-<details>
-<summary><b>macOS</b></summary>
-
-* [x86_64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-macos-x86_64) Intel or AMD 64-Bit CPU
-
-Download latest `k8senv` tool:
-```
-cd ~/.k8senv/bin
-curl -L https://github.com/navilg/k8senv/releases/latest/download/k8senv-macos-x86_64 -o k8senv
-chmod +x k8senv
-```
-
-Download specific version of `k8senv`. For e.g. To download version `0.1.3`:
-
-```
-cd ~/.k8senv/bin
-curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-macos-x86_64 -o k8senv
-chmod +x k8senv
-```
-
-* [arm64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-macos-arm64) Arm-based 64-Bit CPU (i.e. in Raspberry Pi)
-
-Download latest `k8senv` tool:
-```
-cd ~/.k8senv/bin
-curl -L https://github.com/navilg/k8senv/releases/latest/download/k8senv-macos-arm64 -o k8senv
-chmod +x k8senv
-```
-
-Download specific version of `k8senv`. For e.g. To download version `0.1.3`:
-
-```
-cd ~/.k8senv/bin
-curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-macos-arm64 -o k8senv
-chmod +x k8senv
-```
-
-</details>
-
-
-
 3. Add `~/.k8senv/bin` directory to your `PATH` environment variable
 
 ```
@@ -107,6 +61,20 @@ which k8senv
 ```
 
 ## Usage
+
+```
+k8senv [VERB] [CLIENT] [VERSION]
+
+# [VERB] can be install, use, list or remove
+# [CLIENT] can be kubectl, velero or helm
+# [VERSION] can be any client's version in format v*.*.*
+
+examples:
+k8senv use kubectl v1.23.2
+k8senv install velero v1.8.1
+```
+
+Examples:
 
 **Install a kubectl version**
 
@@ -149,5 +117,7 @@ k8senv remove kubectl v1.26.2
 k8senv remove kubectl 1.26.2
 k8senv kubectl remove v1.26.2
 ```
+
+**Similar command can be used to install, use, list and remove velero and helm clients.**
 
 **Under development**

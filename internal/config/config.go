@@ -13,7 +13,7 @@ type VersionInfo struct {
 
 var Version = VersionInfo{
 	GoVersion: runtime.Version(),
-	K8senv:    "v0.1.2",
+	K8senv:    "v0.2.0",
 }
 
 func GetDotK8senvPath() *string {
