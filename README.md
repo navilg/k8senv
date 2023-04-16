@@ -30,7 +30,7 @@ Download specific version of `k8senv`. For e.g. To download version `0.1.3`:
 
 ```
 cd ~/.k8senv/bin
-curl -LO https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-linux-x86_64 -o k8senv
+curl -L https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-linux-x86_64 -o k8senv
 chmod +x k8senv
 ```
 
