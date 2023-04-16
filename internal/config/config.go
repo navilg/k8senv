@@ -6,14 +6,20 @@ import (
 	"strings"
 )
 
+var version string = "v0.3.0"
+
 type VersionInfo struct {
 	GoVersion string `json:"GoVersion"`
 	K8senv    string `json:"K8senv"`
+	OS        string `json:"OS"`
+	Arch      string `json:"ARCH"`
 }
 
 var Version = VersionInfo{
 	GoVersion: runtime.Version(),
-	K8senv:    "v0.2.0",
+	K8senv:    version,
+	OS:        runtime.GOOS,
+	Arch:      runtime.GOARCH,
 }
 
 func GetDotK8senvPath() *string {

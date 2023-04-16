@@ -90,10 +90,9 @@ jobs:
       - run: |
          #!/usr/bin/env bash
          chmod +x k8senv-linux-x86_64
-         version=$(./k8senv-linux-x86_64 version)
+         version=$(./k8senv-linux-x86_64 version | cut -d " " -f 2 | jq .K8senv | tr -d "\"")
          tag=$(echo "${{ github.ref }}" | rev | cut -d "/" -f 1 | rev)
-         echo "$version" | grep -o $tag
-         if [ $? -ne 0 ]; then
+         if [ "$tag" != "$version" ]; then
             echo "Tag version and release doesnot match"
             exit 1
          fi
