@@ -64,7 +64,10 @@ jobs:
           name: k8senv
       # Test binary
       - name: 🌡️ Test
-        run: chmod +x k8senv-linux-amd64 && ./k8senv-linux-amd64 -h
+        run: |
+          chmod +x k8senv-linux-amd64 && ./k8senv-linux-amd64 -h
+          chmod +x test.sh
+          ./test.sh
 
 #   test-macos:
 #     name: Test macOS
