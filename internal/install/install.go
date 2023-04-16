@@ -18,6 +18,30 @@ import (
 	"github.com/navilg/k8senv/internal/download"
 )
 
+func InstallVersion(toolname, version string, overwrite bool, timeout int, proxy string) error {
+	if toolname == "kubectl" {
+		err := InstallKubectl(version, overwrite, timeout, proxy)
+		if err != nil {
+			return err
+		}
+	} else if toolname == "velero" {
+		err := InstallVelero(version, overwrite, timeout, proxy)
+		if err != nil {
+			return err
+		}
+	} else if toolname == "helm" {
+		err := InstallHelm(version, overwrite, timeout, proxy)
+		if err != nil {
+			return err
+		}
+	} else {
+		fmt.Println(toolname, "is not a valid tool supported by k8senv.")
+		return errors.New(toolname + " is not a valid tool supported by k8senv.")
+	}
+
+	return nil
+}
+
 func InstallKubectl(version string, overwrite bool, timeout int, proxy string) error {
 	latestVersionUrl := "https://storage.googleapis.com/kubernetes-release/release/stable.txt"
 	dotK8sEnvPath := config.GetDotK8senvPath()
