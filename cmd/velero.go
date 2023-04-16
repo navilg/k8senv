@@ -124,7 +124,7 @@ Examples:
 			fmt.Println("Exactly one argumanet is required. Provide velero client version to remove e.g. v1.10.2")
 			os.Exit(1)
 		}
-		err := remove.RemoveVelero(args[0])
+		err := remove.RemoveVersion("velero", args[0])
 		if err != nil {
 			os.Exit(1)
 		}

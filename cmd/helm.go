@@ -125,7 +125,7 @@ Examples:
 			fmt.Println("Exactly one argumanet is required. Provide helm version to remove e.g. v3.10.2")
 			os.Exit(1)
 		}
-		err := remove.RemoveHelm(args[0])
+		err := remove.RemoveVersion("helm", args[0])
 		if err != nil {
 			os.Exit(1)
 		}
