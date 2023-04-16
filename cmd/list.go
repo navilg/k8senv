@@ -65,10 +65,30 @@ Examples:
 	},
 }
 
+var helmListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List all installed versions of helm",
+	Long: `List all installed versions of helm
+	
+Examples:
+	k8senv helm list`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 0 {
+			fmt.Println("No argument is required for listing versions")
+			os.Exit(1)
+		}
+		err := list.ListHelm()
+		if err != nil {
+			os.Exit(1)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(listCmd)
 	kubectlCmd.AddCommand(kubectlListCmd)
 	veleroCmd.AddCommand(veleroListCmd)
+	helmCmd.AddCommand(helmListCmd)
 
 	// Here you will define your flags and configuration settings.
 

@@ -112,3 +112,54 @@ func ListVelero() error {
 
 	return nil
 }
+
+func ListHelm() error {
+	dotK8sEnvPath := config.GetDotK8senvPath()
+	if dotK8sEnvPath == nil {
+		fmt.Println(".k8senv/bin directory is not added in PATH environment variable")
+		return errors.New(".k8senv/bin is not added in PATH environment variable")
+	}
+
+	fileinfo, err := ioutil.ReadDir(*dotK8sEnvPath)
+	if err != nil {
+		fmt.Println("Failed to list installed helm versions")
+		fmt.Println(err)
+		return (err)
+	}
+
+	helmBinaryPath := *dotK8sEnvPath + "/helm"
+	var helmVersionInUse string
+
+	if _, err := os.Lstat(helmBinaryPath); err == nil {
+		currentHelmPathInUse, err := os.Readlink(helmBinaryPath)
+		if err != nil {
+			fmt.Println("Failed to list installed helm versions")
+			fmt.Println(err)
+			return (err)
+		}
+
+		helmVersionInUse = strings.TrimPrefix(filepath.Base(currentHelmPathInUse), "helm.")
+	}
+
+	count := 0
+
+	for _, file := range fileinfo {
+		if !file.IsDir() {
+			if strings.HasPrefix(file.Name(), "helm.") {
+				version := strings.TrimPrefix(file.Name(), "helm.")
+				if helmVersionInUse == version {
+					fmt.Println("*", version)
+				} else {
+					fmt.Println(" ", version)
+				}
+				count = count + 1
+			}
+		}
+	}
+
+	if count == 0 {
+		fmt.Println("No version of helm is installed by k8senv.")
+	}
+
+	return nil
+}
