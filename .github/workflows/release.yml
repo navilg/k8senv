@@ -31,9 +31,14 @@ jobs:
       # K8senv version and Tag name must match
       - name: Test K8senv version
         run: |
-          version=$(./k8senv-linux-amd64 version | cut -d "\"" -f 8)
-          if [ "$version" != "${GITHUB_REF#refs/*/}" ]; then echo "Tag name and K8senv version doesn't match"; exit 1; fi;
-
+          #!/usr/bin/env bash
+          chmod +x k8senv-linux-amd64
+          version=$(./k8senv-linux-amd64 version | cut -d " " -f 2 | jq .K8senv | tr -d "\"")
+          tag=$(echo "${{ github.ref }}" | rev | cut -d "/" -f 1 | rev)
+          if [ "$tag" != "$version" ]; then
+            echo "Tag version and release doesnot match"
+            exit 1
+          fi
 
       # Upload binaries
       # https://github.com/marketplace/actions/upload-a-build-artifact
@@ -76,31 +81,31 @@ jobs:
 #       - name: 🌡️ Test
 #         run: chmod +x k8senv-macos-x86_64 && ./k8senv-macos-x86_64 -h
 
-  test-version:
-    name: Test version
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      # Download binaries
-      # https://github.com/marketplace/actions/download-a-build-artifact
-      - name: 📥 Download
-        uses: actions/download-artifact@v3
-        with:
-          name: k8senv
-      - run: |
-         #!/usr/bin/env bash
-         chmod +x k8senv-linux-amd64
-         version=$(./k8senv-linux-amd64 version | cut -d " " -f 2 | jq .K8senv | tr -d "\"")
-         tag=$(echo "${{ github.ref }}" | rev | cut -d "/" -f 1 | rev)
-         if [ "$tag" != "$version" ]; then
-            echo "Tag version and release doesnot match"
-            exit 1
-         fi
+  # test-version:
+  #   name: Test version
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Download binaries
+  #     # https://github.com/marketplace/actions/download-a-build-artifact
+  #     - name: 📥 Download
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: k8senv
+  #     - run: |
+  #        #!/usr/bin/env bash
+  #        chmod +x k8senv-linux-amd64
+  #        version=$(./k8senv-linux-amd64 version | cut -d " " -f 2 | jq .K8senv | tr -d "\"")
+  #        tag=$(echo "${{ github.ref }}" | rev | cut -d "/" -f 1 | rev)
+  #        if [ "$tag" != "$version" ]; then
+  #           echo "Tag version and release doesnot match"
+  #           exit 1
+  #        fi
 
   pre-release:
     if: startsWith(github.ref, 'refs/tags/v0.') || endsWith(github.ref, '-beta') || endsWith(github.ref, '-alpha')
     name: Pre-release
-    needs: [test-linux, test-version]
+    needs: [test-linux]
     runs-on: ubuntu-latest
     steps:
       - name: 🛎️ Checkout
@@ -127,7 +132,7 @@ jobs:
   release:
     if: false == (startsWith(github.ref, 'refs/tags/v0.') || endsWith(github.ref, '-beta') || endsWith(github.ref, '-alpha'))
     name: Release
-    needs: [test-linux, test-version]
+    needs: [test-linux]
     runs-on: ubuntu-latest
     steps:
       - name: 🛎️ Checkout
