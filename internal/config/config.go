@@ -10,7 +10,7 @@ var version string = "v0.3.0"
 var gitCommit string = "###GitCommitPlaceholder###"
 
 func getGitCommit() string {
-	if gitCommit == "###GitCommitPlaceholder###" {
+	if gitCommit == "###GitCommitPlaceholder###" || gitCommit == "" {
 		return "NA"
 	}
 
