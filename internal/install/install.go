@@ -78,8 +78,11 @@ func InstallKubectl(version string, overwrite bool, timeout int, proxy string) e
 		version = version + ".0.0"
 	}
 
-	downloadUrl := "https://dl.k8s.io/release/" + version + "/bin/linux/amd64/kubectl"
-	checksumUrl := "https://dl.k8s.io/" + version + "/bin/linux/amd64/kubectl.sha256"
+	goos := config.Version.OS
+	goarch := config.Version.Arch
+
+	downloadUrl := "https://dl.k8s.io/release/" + version + "/bin/" + goos + "/" + goarch + "/kubectl"
+	checksumUrl := "https://dl.k8s.io/" + version + "/bin/" + goos + "/" + goarch + "/kubectl.sha256"
 	binaryFileName := *dotK8sEnvPath + "/kubectl." + version
 
 	if _, err := os.Stat(binaryFileName); err == nil && !overwrite {
@@ -173,7 +176,9 @@ func InstallVelero(version string, overwrite bool, timeout int, proxy string) er
 		version = version + ".0.0"
 	}
 
-	downloadUrl := "https://github.com/vmware-tanzu/velero/releases/download/" + version + "/velero-" + version + "-linux-amd64.tar.gz"
+	fullVersion := version + "-" + config.Version.OS + "-" + config.Version.Arch
+
+	downloadUrl := "https://github.com/vmware-tanzu/velero/releases/download/" + version + "/velero-" + fullVersion + ".tar.gz"
 	checksumUrl := "https://github.com/vmware-tanzu/velero/releases/download/" + version + "/CHECKSUM"
 	binaryFileName := *dotK8sEnvPath + "/velero." + version
 
@@ -198,7 +203,7 @@ func InstallVelero(version string, overwrite bool, timeout int, proxy string) er
 		return err
 	}
 
-	err = ioutil.WriteFile(tempDir+"/velero-"+version+"-linux-amd64.tar.gz", data, 0750)
+	err = ioutil.WriteFile(tempDir+"/velero-"+fullVersion+".tar.gz", data, 0750)
 	if err != nil {
 		fmt.Println("Failed to install velero client version", version)
 		fmt.Println(err)
@@ -222,8 +227,8 @@ func InstallVelero(version string, overwrite bool, timeout int, proxy string) er
 		if len(words) < 2 {
 			continue
 		}
-		if words[1] == "velero-"+version+"-linux-amd64.tar.gz" {
-			if checksum.ValidateSHA256Sum(strings.TrimSuffix(string(words[0]), "\n"), tempDir+"/velero-"+version+"-linux-amd64.tar.gz") {
+		if words[1] == "velero-"+fullVersion+".tar.gz" {
+			if checksum.ValidateSHA256Sum(strings.TrimSuffix(string(words[0]), "\n"), tempDir+"/velero-"+fullVersion+".tar.gz") {
 				isChecksumValidated = true
 			}
 			break
@@ -234,14 +239,14 @@ func InstallVelero(version string, overwrite bool, timeout int, proxy string) er
 		fmt.Println("Checksum validated.")
 	} else {
 		fmt.Println("Failed to validate checksum. Deleting the downloaded package.")
-		_ = os.Remove(tempDir + "/velero-" + version + "-linux-amd64.tar.gz")
+		_ = os.Remove(tempDir + "/velero-" + fullVersion + ".tar.gz")
 		return errors.New("Failed to validate checksum of downloaded file")
 	}
 
 	// Gun-Unzipping
 
 	fmt.Println("Unzipping the package")
-	reader, err := os.Open(tempDir + "/velero-" + version + "-linux-amd64.tar.gz")
+	reader, err := os.Open(tempDir + "/velero-" + fullVersion + ".tar.gz")
 	if err != nil {
 		fmt.Println("Failed to unzip the package")
 		fmt.Println(err)
@@ -257,7 +262,7 @@ func InstallVelero(version string, overwrite bool, timeout int, proxy string) er
 	}
 	defer archive.Close()
 
-	target := filepath.Join(tempDir+"/velero-"+version+"-linux-amd64.tar", archive.Name)
+	target := filepath.Join(tempDir+"/velero-"+fullVersion+".tar", archive.Name)
 	writer, err := os.Create(target)
 	if err != nil {
 		fmt.Println("Failed to unzip the package")
@@ -275,7 +280,7 @@ func InstallVelero(version string, overwrite bool, timeout int, proxy string) er
 
 	// Untaring file
 	fmt.Println("Getting the velero client")
-	reader, err = os.Open(tempDir + "/velero-" + version + "-linux-amd64.tar")
+	reader, err = os.Open(tempDir + "/velero-" + fullVersion + ".tar")
 	if err != nil {
 		fmt.Println(err)
 		return err
