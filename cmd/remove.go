@@ -39,7 +39,7 @@ Examples:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to remove e.g. v1.20.3")
 			os.Exit(1)
 		}
-		err := remove.RemoveKubectl(args[0])
+		err := remove.RemoveVersion("kubectl", args[0])
 		if err != nil {
 			os.Exit(1)
 		}
@@ -58,7 +58,26 @@ Examples:
 			fmt.Println("Exactly one argumanet is required. Provide velero version to remove e.g. v1.10.2")
 			os.Exit(1)
 		}
-		err := remove.RemoveVelero(args[0])
+		err := remove.RemoveVersion("velero", args[0])
+		if err != nil {
+			os.Exit(1)
+		}
+	},
+}
+
+var helmRemoveCmd = &cobra.Command{
+	Use:   "remove VERSION",
+	Short: "Remove an installed versions of helm",
+	Long: `Remove an installed versions of helm
+	
+Examples:
+	k8senv helm remove v3.10.2`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 1 {
+			fmt.Println("Exactly one argumanet is required. Provide helm version to remove e.g. v3.10.2")
+			os.Exit(1)
+		}
+		err := remove.RemoveVersion("helm", args[0])
 		if err != nil {
 			os.Exit(1)
 		}
@@ -69,6 +88,7 @@ func init() {
 	rootCmd.AddCommand(removeCmd)
 	kubectlCmd.AddCommand(kubectlRemoveCmd)
 	veleroCmd.AddCommand(veleroRemoveCmd)
+	helmCmd.AddCommand(helmRemoveCmd)
 
 	// Here you will define your flags and configuration settings.
 

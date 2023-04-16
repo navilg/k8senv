@@ -54,7 +54,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to install e.g. v1.20.3")
 			os.Exit(1)
 		}
-		err := install.InstallKubectl(args[0], overwriteInstall, timeout, proxy)
+		err := install.InstallVersion("kubectl", args[0], overwriteInstall, timeout, proxy)
 		if err != nil {
 			os.Exit(1)
 		}
@@ -82,7 +82,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to use e.g. v1.20.3")
 			os.Exit(1)
 		}
-		err := use.UseKubectl(args[0])
+		err := use.UseVersion("kubectl", args[0])
 		if err != nil {
 			os.Exit(1)
 		}
@@ -101,7 +101,7 @@ Examples:
 			fmt.Println("No argument is required for listing versions")
 			os.Exit(1)
 		}
-		err := list.ListKubectl()
+		err := list.ListVersions("kubectl")
 		if err != nil {
 			os.Exit(1)
 		}
@@ -120,7 +120,7 @@ Examples:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to remove e.g. v1.20.3")
 			os.Exit(1)
 		}
-		err := remove.RemoveKubectl(args[0])
+		err := remove.RemoveVersion("kubectl", args[0])
 		if err != nil {
 			os.Exit(1)
 		}

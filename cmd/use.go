@@ -46,7 +46,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to use e.g. v1.20.3")
 			os.Exit(1)
 		}
-		err := use.UseKubectl(args[0])
+		err := use.UseVersion("kubectl", args[0])
 		if err != nil {
 			os.Exit(1)
 		}
@@ -73,7 +73,34 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide velero version to use e.g. v1.10.2")
 			os.Exit(1)
 		}
-		err := use.UseVelero(args[0])
+		err := use.UseVersion("velero", args[0])
+		if err != nil {
+			os.Exit(1)
+		}
+	},
+}
+
+var helmUseCmd = &cobra.Command{
+	Use:   "use VERSION",
+	Short: "Switch to a version of helm",
+	Long: `Switch to a version of helm
+	
+Examples:
+	# Switch to helm version 3.10.2
+	k8senv use helm v3.10.2
+	k8senv use helm 3.10.2
+	
+Supported version formats:
+	v3.10.2
+	3.10.2	# Defaults to v3.10.2
+	3.10 	# Defaults to v3.10.0
+	3 	# Defaults to v3.0.0`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 1 {
+			fmt.Println("Exactly one argumanet is required. Provide helm version to use e.g. v3.10.2")
+			os.Exit(1)
+		}
+		err := use.UseVersion("helm", args[0])
 		if err != nil {
 			os.Exit(1)
 		}
@@ -84,6 +111,7 @@ func init() {
 	rootCmd.AddCommand(useCmd)
 	kubectlCmd.AddCommand(kubectUseCmd)
 	veleroCmd.AddCommand(veleroUseCmd)
+	helmCmd.AddCommand(helmUseCmd)
 
 	// Here you will define your flags and configuration settings.
 

@@ -54,7 +54,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to install e.g. v1.20.3")
 			os.Exit(1)
 		}
-		err := install.InstallKubectl(args[0], overwriteInstall, timeout, proxy)
+		err := install.InstallVersion("kubectl", args[0], overwriteInstall, timeout, proxy)
 		if err != nil {
 			os.Exit(1)
 		}
@@ -90,7 +90,43 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide velero version to install e.g. v1.20.3")
 			os.Exit(1)
 		}
-		err := install.InstallVelero(args[0], overwriteInstall, timeout, proxy)
+		err := install.InstallVersion("velero", args[0], overwriteInstall, timeout, proxy)
+		if err != nil {
+			os.Exit(1)
+		}
+
+	},
+}
+
+var helmInstallCmd = &cobra.Command{
+	Use:   "install VERSION",
+	Short: "Install a version of helm",
+	Long: `Install a version of helm
+	
+Examples:
+	# Install helm version 3.10.2
+	k8senv helm install v3.10.2
+
+	# Install latest available stable version of helm
+	k8senv helm install latest
+
+	# Install helm version 3.8.0 and overwrite it if it already exists
+	k8senv helm install 3.8.0 --overwrite
+
+	# Install helm version 3.8.0 aand set timeout to 300 seconds (If internet is slow), Default: 120 seconds
+	k8senv helm install 3.8.0 --timeout=300
+
+Supported version formats:
+	v3.10.2
+	3.10.2	# Defaults to v3.10.2
+	1.10 	# Defaults to v1.10.0
+	1 	# Defaults to v1.0.0`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 1 {
+			fmt.Println("Exactly one argumanet is required. Provide helm version to install e.g. v3.10.2")
+			os.Exit(1)
+		}
+		err := install.InstallVersion("helm", args[0], overwriteInstall, timeout, proxy)
 		if err != nil {
 			os.Exit(1)
 		}
@@ -102,6 +138,7 @@ func init() {
 	rootCmd.AddCommand(installCmd)
 	kubectlCmd.AddCommand(kubectlInstallCmd)
 	veleroCmd.AddCommand(veleroInstallCmd)
+	helmCmd.AddCommand(helmInstallCmd)
 
 	// Here you will define your flags and configuration settings.
 
@@ -117,6 +154,10 @@ func init() {
 	installVeleroCmd.PersistentFlags().BoolVarP(&overwriteInstall, "overwrite", "f", false, "Overwrite or re-install existing version")
 	installVeleroCmd.PersistentFlags().IntVarP(&timeout, "timeout", "t", 120, "Timeout in seconds [DEFAULT: 120 seconds]")
 	installVeleroCmd.PersistentFlags().StringVarP(&proxy, "proxy", "p", "", "HTTP/HTTPS proxy to use for downloading clients from its source")
+
+	installHelmCmd.PersistentFlags().BoolVarP(&overwriteInstall, "overwrite", "f", false, "Overwrite or re-install existing version")
+	installHelmCmd.PersistentFlags().IntVarP(&timeout, "timeout", "t", 120, "Timeout in seconds [DEFAULT: 120 seconds]")
+	installHelmCmd.PersistentFlags().StringVarP(&proxy, "proxy", "p", "", "HTTP/HTTPS proxy to use for downloading clients from its source")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
