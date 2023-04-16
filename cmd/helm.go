@@ -9,6 +9,7 @@ import (
 
 	"github.com/navilg/k8senv/internal/install"
 	"github.com/navilg/k8senv/internal/list"
+	"github.com/navilg/k8senv/internal/remove"
 	"github.com/navilg/k8senv/internal/use"
 	"github.com/spf13/cobra"
 )
@@ -124,10 +125,10 @@ Examples:
 			fmt.Println("Exactly one argumanet is required. Provide helm version to remove e.g. v3.10.2")
 			os.Exit(1)
 		}
-		// err := remove.RemoveHelm(args[0])
-		// if err != nil {
-		// 	os.Exit(1)
-		// }
+		err := remove.RemoveHelm(args[0])
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

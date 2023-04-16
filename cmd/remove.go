@@ -65,10 +65,30 @@ Examples:
 	},
 }
 
+var helmRemoveCmd = &cobra.Command{
+	Use:   "remove VERSION",
+	Short: "Remove an installed versions of helm",
+	Long: `Remove an installed versions of helm
+	
+Examples:
+	k8senv helm remove v3.10.2`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 1 {
+			fmt.Println("Exactly one argumanet is required. Provide helm version to remove e.g. v3.10.2")
+			os.Exit(1)
+		}
+		err := remove.RemoveHelm(args[0])
+		if err != nil {
+			os.Exit(1)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(removeCmd)
 	kubectlCmd.AddCommand(kubectlRemoveCmd)
 	veleroCmd.AddCommand(veleroRemoveCmd)
+	helmCmd.AddCommand(helmRemoveCmd)
 
 	// Here you will define your flags and configuration settings.
 
