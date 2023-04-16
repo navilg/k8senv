@@ -2,6 +2,10 @@
 
 go version || exit 1
 
+commitId=$(git log --format="%H" -n 1)
+
+sed -i "s|###GitCommitPlaceholder###|${commitId}|g" internal/config/config.go
+
 # Linux
 echo "Building for Linux OS with AMD64 Arch"
 CGO_ENABLED=0  GOOS=linux GOARCH=amd64 go build -o k8senv-linux-amd64 main.go && echo "✅ DONE" || echo "❌ FAILED"
