@@ -9,6 +9,14 @@ import (
 var version string = "v0.3.0"
 var gitCommit string = "###GitCommitPlaceholder###"
 
+func getGitCommit() string {
+	if gitCommit == "###GitCommitPlaceholder###" {
+		return "NA"
+	}
+
+	return gitCommit
+}
+
 type VersionInfo struct {
 	GoVersion string `json:"GoVersion"`
 	K8senv    string `json:"K8senv"`
@@ -22,7 +30,7 @@ var Version = VersionInfo{
 	K8senv:    version,
 	OS:        runtime.GOOS,
 	Arch:      runtime.GOARCH,
-	GitCommit: gitCommit,
+	GitCommit: getGitCommit(),
 }
 
 func GetDotK8senvPath() *string {
