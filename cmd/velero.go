@@ -17,7 +17,7 @@ import (
 // veleroCmd represents the velero command
 var veleroCmd = &cobra.Command{
 	Use:   "velero",
-	Short: "Install, Use or List versions of velero",
+	Short: "Install, Use or List versions of velero client",
 	// 	Long: `A longer description that spans multiple lines and likely contains examples
 	// and usage of using your command. For example:
 
