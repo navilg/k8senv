@@ -12,6 +12,8 @@ CGO_ENABLED=0  GOOS=linux GOARCH=amd64 go build -o k8senv-linux-amd64 main.go &&
 echo "Building for Linux OS with ARM64 Arch"
 CGO_ENABLED=0  GOOS=linux GOARCH=arm64 go build -o k8senv-linux-arm64  main.go && echo "✅ DONE" || echo "❌ FAILED"
 
+sed -i "s|${commitId}|###GitCommitPlaceholder###|g" internal/config/config.go
+
 # macOS
 # echo "Building for MacOS with AMD64 Arch"
 # CGO_ENABLED=0  GOOS=darwin GOARCH=amd64 go build -o k8senv-macos-x86_64 main.go && echo "✅ DONE" || echo "❌ FAILED"
