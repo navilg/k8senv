@@ -1,3 +1,5 @@
+**WORK IN PROGRESS**
+
 # k8senv
 
 [Kubernetes](https://kubernetes.io) client's version manager inspired by [tfenv](https://github.com/tfutils/tfenv)
@@ -120,4 +122,3 @@ k8senv kubectl remove v1.26.2
 
 **Similar command can be used to install, use, list and remove velero and helm clients.**
 
-**Under development**
