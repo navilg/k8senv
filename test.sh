@@ -111,11 +111,11 @@ k8senv list helm
 echo "✅"
 echo
 
-# echo "Testing 'k8senv helm remove'"
-# k8senv helm remove v3.10.2
-# k8senv list helm
-# echo "Testing 'k8senv remove helm'"
-# k8senv remove helm 3.8.1
-# k8senv list helm
-# echo "✅"
-# echo
+echo "Testing 'k8senv helm remove'"
+k8senv helm remove v3.10.2
+k8senv list helm
+echo "Testing 'k8senv remove helm'"
+k8senv remove helm 3.8.1
+k8senv list helm
+echo "✅"
+echo
