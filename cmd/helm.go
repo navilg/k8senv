@@ -9,6 +9,7 @@ import (
 
 	"github.com/navilg/k8senv/internal/install"
 	"github.com/navilg/k8senv/internal/list"
+	"github.com/navilg/k8senv/internal/use"
 	"github.com/spf13/cobra"
 )
 
@@ -85,10 +86,10 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide helm version to use e.g. v3.10.2")
 			os.Exit(1)
 		}
-		// err := use.UseHelm(args[0])
-		// if err != nil {
-		// 	os.Exit(1)
-		// }
+		err := use.UseHelm(args[0])
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 
