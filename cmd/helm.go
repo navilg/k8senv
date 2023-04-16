@@ -104,7 +104,7 @@ Examples:
 			fmt.Println("No argument is required for listing versions")
 			os.Exit(1)
 		}
-		err := list.ListHelm()
+		err := list.ListVersions("helm")
 		if err != nil {
 			os.Exit(1)
 		}

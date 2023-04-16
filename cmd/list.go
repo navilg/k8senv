@@ -39,7 +39,7 @@ Examples:
 			fmt.Println("No argument is required for listing versions")
 			os.Exit(1)
 		}
-		err := list.ListKubectl()
+		err := list.ListVersions("kubectl")
 		if err != nil {
 			os.Exit(1)
 		}
@@ -58,7 +58,7 @@ Examples:
 			fmt.Println("No argument is required for listing versions")
 			os.Exit(1)
 		}
-		err := list.ListVelero()
+		err := list.ListVersions("velero")
 		if err != nil {
 			os.Exit(1)
 		}
@@ -77,7 +77,7 @@ Examples:
 			fmt.Println("No argument is required for listing versions")
 			os.Exit(1)
 		}
-		err := list.ListHelm()
+		err := list.ListVersions("helm")
 		if err != nil {
 			os.Exit(1)
 		}
