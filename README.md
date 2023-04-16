@@ -26,11 +26,11 @@ curl -L https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-a
 chmod +x k8senv
 ```
 
-Download specific version of `k8senv`. For e.g. To download version `0.1.3`:
+Download specific version of `k8senv`. For e.g. To download version `v0.3.0`:
 
 ```
 cd ~/.k8senv/bin
-curl -L https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-linux-amd64 -o k8senv
+curl -L https://github.com/navilg/k8senv/releases/download/vv0.3.0/k8senv-linux-amd64 -o k8senv
 chmod +x k8senv
 ```
 
@@ -43,11 +43,11 @@ curl -L https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-a
 chmod +x k8senv
 ```
 
-Download specific version of `k8senv`. For e.g. To download version `0.1.3`:
+Download specific version of `k8senv`. For e.g. To download version `v0.3.0`:
 
 ```
 cd ~/.k8senv/bin
-curl -L https://github.com/navilg/k8senv/releases/download/v0.1.3/k8senv-linux-arm64 -o k8senv
+curl -L https://github.com/navilg/k8senv/releases/download/vv0.3.0/k8senv-linux-arm64 -o k8senv
 chmod +x k8senv
 ```
 
