@@ -95,14 +95,14 @@ k8senv helm install 3.8.1 --timeout 300 --overwrite
 echo "✅"
 echo
 
-# echo "Testing 'k8senv use helm'"
-# k8senv use helm v3.8.1
-# helm version
-# echo "Testing 'k8senv helm use'"
-# k8senv helm use 3.10.2
-# helm version
-# echo "✅"
-# echo
+echo "Testing 'k8senv use helm'"
+k8senv use helm v3.8.1
+helm version
+echo "Testing 'k8senv helm use'"
+k8senv helm use 3.10.2
+helm version
+echo "✅"
+echo
 
 echo "Testing 'k8senv helm list'"
 k8senv helm list

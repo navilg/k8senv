@@ -46,7 +46,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide kubectl version to use e.g. v1.20.3")
 			os.Exit(1)
 		}
-		err := use.UseKubectl(args[0])
+		err := use.UseVersion("kubectl", args[0])
 		if err != nil {
 			os.Exit(1)
 		}
@@ -73,7 +73,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide velero version to use e.g. v1.10.2")
 			os.Exit(1)
 		}
-		err := use.UseVelero(args[0])
+		err := use.UseVersion("velero", args[0])
 		if err != nil {
 			os.Exit(1)
 		}
@@ -100,7 +100,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide helm version to use e.g. v3.10.2")
 			os.Exit(1)
 		}
-		err := use.UseHelm(args[0])
+		err := use.UseVersion("helm", args[0])
 		if err != nil {
 			os.Exit(1)
 		}

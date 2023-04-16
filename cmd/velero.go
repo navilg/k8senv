@@ -86,7 +86,7 @@ Supported version formats:
 			fmt.Println("Exactly one argumanet is required. Provide velero client version to use e.g. v1.10.2")
 			os.Exit(1)
 		}
-		err := use.UseVelero(args[0])
+		err := use.UseVersion("velero", args[0])
 		if err != nil {
 			os.Exit(1)
 		}
