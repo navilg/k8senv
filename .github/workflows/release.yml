@@ -26,12 +26,12 @@ jobs:
 
       # Test binary
       - name: 🌡️ Test
-        run: chmod +x k8senv-linux-x86_64 && ./k8senv-linux-x86_64 -h
+        run: chmod +x k8senv-linux-amd64 && ./k8senv-linux-amd64 -h
 
       # K8senv version and Tag name must match
       - name: Test K8senv version
         run: |
-          version=$(./k8senv-linux-x86_64 version | cut -d "\"" -f 8)
+          version=$(./k8senv-linux-amd64 version | cut -d "\"" -f 8)
           if [ "$version" != "${GITHUB_REF#refs/*/}" ]; then echo "Tag name and K8senv version doesn't match"; exit 1; fi;
 
 
@@ -59,7 +59,7 @@ jobs:
           name: k8senv
       # Test binary
       - name: 🌡️ Test
-        run: chmod +x k8senv-linux-x86_64 && ./k8senv-linux-x86_64 -h
+        run: chmod +x k8senv-linux-amd64 && ./k8senv-linux-amd64 -h
 
 #   test-macos:
 #     name: Test macOS
@@ -89,8 +89,8 @@ jobs:
           name: k8senv
       - run: |
          #!/usr/bin/env bash
-         chmod +x k8senv-linux-x86_64
-         version=$(./k8senv-linux-x86_64 version | cut -d " " -f 2 | jq .K8senv | tr -d "\"")
+         chmod +x k8senv-linux-amd64
+         version=$(./k8senv-linux-amd64 version | cut -d " " -f 2 | jq .K8senv | tr -d "\"")
          tag=$(echo "${{ github.ref }}" | rev | cut -d "/" -f 1 | rev)
          if [ "$tag" != "$version" ]; then
             echo "Tag version and release doesnot match"
@@ -111,7 +111,7 @@ jobs:
           name: k8senv
       - name: Generate checksums
         run: |
-          sha256sum k8senv-linux-x86_64 > CHECKSUM
+          sha256sum k8senv-linux-amd64 > CHECKSUM
           sha256sum k8senv-linux-arm64 >> CHECKSUM
       # Release, upload files
       # https://github.com/marketplace/actions/gh-release
@@ -119,7 +119,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            k8senv-linux-x86_64
+            k8senv-linux-amd64
             k8senv-linux-arm64
             CHECKSUM
           generate_release_notes: true
@@ -138,7 +138,7 @@ jobs:
           name: k8senv
       - name: Generate checksums
         run: |
-          sha256sum k8senv-linux-x86_64 > CHECKSUM
+          sha256sum k8senv-linux-amd64 > CHECKSUM
           sha256sum k8senv-linux-arm64 >> CHECKSUM
     # Release, upload files
     # https://github.com/marketplace/actions/gh-release
@@ -146,7 +146,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            k8senv-linux-x86_64
+            k8senv-linux-amd64
             k8senv-linux-arm64
             CHECKSUM
           generate_release_notes: true

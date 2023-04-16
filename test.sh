@@ -5,13 +5,13 @@ set -e
 # Build
 
 bash build.sh
-chmod +x ./k8senv-linux-x86_64
+chmod +x ./k8senv-linux-amd64
 echo
 
 mkdir -p $HOME/.k8senv/bin
 export PATH=$HOME/.k8senv/bin:$PATH
 
-cp -f ./k8senv-linux-x86_64 $HOME/.k8senv/bin/k8senv
+cp -f ./k8senv-linux-amd64 $HOME/.k8senv/bin/k8senv
 
 echo "Testing 'k8senv version'"
 k8senv version
