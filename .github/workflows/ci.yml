@@ -24,6 +24,5 @@ jobs:
       - name: 🌡️ Test
         run: |
           go run main.go -h && go run main.go version
-          go run main.go version | cut -d " " -f 2 | jq .K8senv | tr -d "\""
           chmod +x test.sh
           ./test.sh
