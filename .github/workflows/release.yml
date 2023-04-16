@@ -109,6 +109,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: k8senv
+      - name: Generate checksums
+        run: |
+          sha256sum k8senv-linux-x86_64 > CHECKSUM
+          sha256sum k8senv-linux-arm64 >> CHECKSUM
       # Release, upload files
       # https://github.com/marketplace/actions/gh-release
       - name: ✨ Release
@@ -117,6 +121,7 @@ jobs:
           files: |
             k8senv-linux-x86_64
             k8senv-linux-arm64
+            CHECKSUM
           generate_release_notes: true
           prerelease: true
   release:
@@ -131,6 +136,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: k8senv
+      - name: Generate checksums
+        run: |
+          sha256sum k8senv-linux-x86_64 > CHECKSUM
+          sha256sum k8senv-linux-arm64 >> CHECKSUM
     # Release, upload files
     # https://github.com/marketplace/actions/gh-release
       - name: ✨ Release
@@ -139,4 +148,5 @@ jobs:
           files: |
             k8senv-linux-x86_64
             k8senv-linux-arm64
+            CHECKSUM
           generate_release_notes: true
