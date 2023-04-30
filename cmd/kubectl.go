@@ -10,6 +10,7 @@ import (
 	"github.com/navilg/k8senv/internal/install"
 	"github.com/navilg/k8senv/internal/list"
 	"github.com/navilg/k8senv/internal/remove"
+	"github.com/navilg/k8senv/internal/unuse"
 	"github.com/navilg/k8senv/internal/use"
 	"github.com/spf13/cobra"
 )
@@ -127,12 +128,33 @@ Examples:
 	},
 }
 
+var unuseKubectlCmd = &cobra.Command{
+	Use:   "kubectl",
+	Short: "Stop using k8senv managed kubectl",
+	Long: `Stop using k8senv managed kubectl. 
+This will reset your system to use system installed client of kubectl if present.
+	
+Examples:
+	k8senv unuse kubectl`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 0 {
+			fmt.Println("No argument is required for unusing kubectl")
+			os.Exit(1)
+		}
+		err := unuse.UnuseVersions("kubectl")
+		if err != nil {
+			os.Exit(1)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(kubectlCmd)
 	installCmd.AddCommand(installKubectlCmd)
 	useCmd.AddCommand(useKubectlCmd)
 	listCmd.AddCommand(listKubectlCmd)
 	removeCmd.AddCommand(removeKubectlCmd)
+	unuseCmd.AddCommand(unuseKubectlCmd)
 
 	// Here you will define your flags and configuration settings.
 

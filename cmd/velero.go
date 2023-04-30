@@ -10,6 +10,7 @@ import (
 	"github.com/navilg/k8senv/internal/install"
 	"github.com/navilg/k8senv/internal/list"
 	"github.com/navilg/k8senv/internal/remove"
+	"github.com/navilg/k8senv/internal/unuse"
 	"github.com/navilg/k8senv/internal/use"
 	"github.com/spf13/cobra"
 )
@@ -131,12 +132,33 @@ Examples:
 	},
 }
 
+var unuseVeleroCmd = &cobra.Command{
+	Use:   "velero",
+	Short: "Stop using k8senv managed velero",
+	Long: `Stop using k8senv managed velero. 
+This will reset your system to use system installed client of velero if present.
+	
+Examples:
+	k8senv unuse velero`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 0 {
+			fmt.Println("No argument is required for unusing velero")
+			os.Exit(1)
+		}
+		err := unuse.UnuseVersions("velero")
+		if err != nil {
+			os.Exit(1)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(veleroCmd)
 	installCmd.AddCommand(installVeleroCmd)
 	useCmd.AddCommand(useVeleroCmd)
 	listCmd.AddCommand(listVeleroCmd)
 	removeCmd.AddCommand(removeVeleroCmd)
+	unuseCmd.AddCommand(unuseVeleroCmd)
 
 	// Here you will define your flags and configuration settings.
 

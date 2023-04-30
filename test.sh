@@ -43,6 +43,15 @@ k8senv list kubectl
 echo "✅"
 echo
 
+echo "Testing 'k8senv kubectl unuse'"
+k8senv kubectl unuse
+k8senv list kubectl
+echo "Testing 'k8senv unuse kubectl'"
+k8senv unuse kubectl
+k8senv list kubectl
+echo "✅"
+echo
+
 echo "Testing 'k8senv kubectl remove'"
 k8senv kubectl remove v1.23.2
 k8senv list kubectl
@@ -77,6 +86,15 @@ k8senv list velero
 echo "✅"
 echo
 
+echo "Testing 'k8senv velero unuse'"
+k8senv velero unuse
+k8senv list velero
+echo "Testing 'k8senv unuse velero'"
+k8senv unuse velero
+k8senv list velero
+echo "✅"
+echo
+
 echo "Testing 'k8senv velero remove'"
 k8senv velero remove v1.10.2
 k8senv list velero
@@ -107,6 +125,15 @@ echo
 echo "Testing 'k8senv helm list'"
 k8senv helm list
 echo "Testing 'k8senv list helm'"
+k8senv list helm
+echo "✅"
+echo
+
+echo "Testing 'k8senv helm unuse'"
+k8senv helm unuse
+k8senv list helm
+echo "Testing 'k8senv unuse helm'"
+k8senv unuse helm
 k8senv list helm
 echo "✅"
 echo

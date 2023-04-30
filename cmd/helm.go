@@ -10,6 +10,7 @@ import (
 	"github.com/navilg/k8senv/internal/install"
 	"github.com/navilg/k8senv/internal/list"
 	"github.com/navilg/k8senv/internal/remove"
+	"github.com/navilg/k8senv/internal/unuse"
 	"github.com/navilg/k8senv/internal/use"
 	"github.com/spf13/cobra"
 )
@@ -132,12 +133,33 @@ Examples:
 	},
 }
 
+var unuseHelmCmd = &cobra.Command{
+	Use:   "helm",
+	Short: "Stop using k8senv managed helm",
+	Long: `Stop using k8senv managed helm. 
+This will reset your system to use system installed client of helm if present.
+	
+Examples:
+	k8senv unuse helm`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 0 {
+			fmt.Println("No argument is required for unusing helm")
+			os.Exit(1)
+		}
+		err := unuse.UnuseVersions("helm")
+		if err != nil {
+			os.Exit(1)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(helmCmd)
 	installCmd.AddCommand(installHelmCmd)
 	useCmd.AddCommand(useHelmCmd)
 	listCmd.AddCommand(listHelmCmd)
 	removeCmd.AddCommand(removeHelmCmd)
+	unuseCmd.AddCommand(unuseHelmCmd)
 
 	// Here you will define your flags and configuration settings.
 
