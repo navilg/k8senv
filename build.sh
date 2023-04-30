@@ -3,6 +3,7 @@
 go version || exit 1
 
 commitId=$(git log --format="%H" -n 1)
+echo $commitId
 
 sed -i "s|###GitCommitPlaceholder###|${commitId}|g" internal/config/config.go
 
