@@ -118,6 +118,15 @@ k8senv use kubectl 1.26.2
 k8senv kubectl use v1.26.2
 ```
 
+**Unuse/Disable k8senv managed kubectl**
+
+Any of the below command can be used to unuse or disable k8senv managed kubectl without uninstalling it. This will reset the system to use system installed kubectl, if present.
+
+```
+k8senv unuse kubectl
+k8senv kubectl unuse
+```
+
 **Remove an existing version of kubectl**
 
 Any of below commands can be used to remove kubectl version 1.26.2.
