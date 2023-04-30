@@ -1,5 +1,3 @@
-**WORK IN PROGRESS**
-
 # k8senv
 
 [Kubernetes](https://kubernetes.io) client's version manager inspired by [tfenv](https://github.com/tfutils/tfenv)
