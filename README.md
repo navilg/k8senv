@@ -14,7 +14,12 @@ This small tool is to help manage different versions of Kubernetes clients. Kube
 
 ## How to install/setup
 
-1. Create a directory .k8senv/bin in home directory `mkdir -p ~/.k8senv/bin`
+1. Create a directory .k8senv/bin in home directory
+
+```
+mkdir -p ~/.k8senv/bin
+```
+
 2. Download `k8senv` tool into `.k8senv/bin` directory
 
 [amd64](https://github.com/navilg/k8senv/releases/latest/download/k8senv-linux-amd64) Intel or AMD 64-Bit CPU
@@ -56,10 +61,13 @@ chmod +x k8senv
 ```
 export PATH="$HOME/.k8senv/bin:$PATH"
 echo 'export PATH="$HOME/.k8senv/bin:$PATH"' >> ~/.bashrc
+hash -r
 ```
 
 ```
 which k8senv
+# OR
+type k8senv
 ```
 
 ## Usage
@@ -122,3 +130,9 @@ k8senv kubectl remove v1.26.2
 
 **Similar command can be used to install, use, list and remove velero and helm clients.**
 
+For e.g.
+
+```
+k8senv install helm v3.10.2
+k8senv remove velero 1.10.1
+```
