@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"runtime"
 	"strings"
 
 	"github.com/navilg/k8senv/internal/config"
@@ -51,6 +52,11 @@ func UseVersion(toolname, version string) error {
 	}
 
 	fmt.Println("Using", toolname, version, "as default.")
+
+	if runtime.GOOS == "linux" {
+
+		fmt.Println("Bash shell caches the program location. You might need to run 'hash -d " + toolname + "' to clear it for this to work.")
+	}
 
 	return nil
 }

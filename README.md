@@ -114,6 +114,12 @@ k8senv use kubectl 1.26.2
 k8senv kubectl use v1.26.2
 ```
 
+If you were using system installed version of `kubectl` in same shell session, you will need to clear the cached path of the kubectl using below command.
+
+```
+hash -d kubectl
+```
+
 **Unuse/Disable k8senv managed kubectl**
 
 Any of the below command can be used to unuse or disable k8senv managed kubectl without uninstalling it. This will reset the system to use system installed kubectl, if present.
@@ -121,6 +127,12 @@ Any of the below command can be used to unuse or disable k8senv managed kubectl 
 ```
 k8senv unuse kubectl
 k8senv kubectl unuse
+```
+
+To clear the cached k8senv path of kubectl, you will need to clear it using below command before you can use system installed version of the tool.
+
+```
+hash -d kubectl
 ```
 
 **Remove an existing version of kubectl**
