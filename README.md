@@ -153,3 +153,7 @@ For e.g.
 k8senv install helm v3.10.2
 k8senv remove velero 1.10.1
 ```
+
+## Demo
+
+[![Demo](https://asciinema.org/a/dSPtu0bAPvPFxjhqtJR3LNC89.svg)](https://asciinema.org/a/dSPtu0bAPvPFxjhqtJR3LNC89)
