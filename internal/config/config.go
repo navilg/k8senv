@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var version string = "v1.0.1"
+var version string = "v1.0.2"
 var gitCommit string = "###GitCommitPlaceholder###"
 
 func getGitCommit() string {
