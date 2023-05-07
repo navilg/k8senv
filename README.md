@@ -8,6 +8,10 @@ Manytimes we need to manage many Kubernetes clusters from same jumpbox or machin
 
 This small tool is to help manage different versions of Kubernetes clients. Kubernetes clients `kubectl`, `helm` and `velero` are supported at this stage.
 
+- [How to install/setup](https://github.com/navilg/k8senv#how-to-installsetup)
+- [Usage](https://github.com/navilg/k8senv#usage)
+- [Demo](https://github.com/navilg/k8senv#demo)
+
 ## How to install/setup
 
 1. Create a directory .k8senv/bin in home directory
