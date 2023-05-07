@@ -25,8 +25,8 @@ func UnuseVersions(toolname string) error {
 			fmt.Println("Due to,", err)
 			return err
 		}
+		fmt.Println(toolname, "successfully set to unuse.")
 		if runtime.GOOS == "linux" {
-			fmt.Println(toolname, "successfully set to unuse.")
 			fmt.Println("Bash shell caches the program location. You might need to run 'hash -d " + toolname + "' to clear it for this to work.")
 		}
 	}
