@@ -77,7 +77,7 @@ k8senv [VERB] [CLIENT] [VERSION]
 
 # [VERB] can be install, use, list or remove
 # [CLIENT] can be kubectl, velero or helm
-# [VERSION] can be any client's version in format v*.*.* or latest or auto (only supported for kubectl and velero)
+# [VERSION] can be any client's version in format v*.*.* or latest or auto (auto is only supported for kubectl install and use subcommands)
 
 examples:
 
@@ -120,6 +120,7 @@ Any of below commands can be used to switch kubectl version to 1.26.2. If versio
 k8senv use kubectl v1.26.2
 k8senv use kubectl 1.26.2
 k8senv kubectl use v1.26.2
+k8senv use kubectl auto
 ```
 
 If you were using system installed version of `kubectl` in same shell session, you will need to clear the cached path of the kubectl using below command.
