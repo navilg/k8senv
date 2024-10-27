@@ -72,16 +72,20 @@ type k8senv
 
 ## Usage
 
-```
+```bash
 k8senv [VERB] [CLIENT] [VERSION]
 
 # [VERB] can be install, use, list or remove
 # [CLIENT] can be kubectl, velero or helm
-# [VERSION] can be any client's version in format v*.*.*
+# [VERSION] can be any client's version in format v*.*.* or latest or auto (auto is only supported for kubectl and velero client for install and use subcommands)
 
 examples:
+
 k8senv use kubectl v1.23.2
 k8senv install velero v1.8.1
+k8senv use velero auto # Automatically detects Velero server version from current context and use same velero client version
+k8senv install kubectl latest # To install latest available kubectl
+k8senv install kubectl auto # Automatically detects Kubernetes version from current context and downloads same kubectl version
 ```
 
 Examples:
@@ -97,6 +101,7 @@ k8senv kubectl install v1.26.2
 k8senv install kubectl 1.26.2 --overwrite   # Installs even if it already exists
 k8senv install kubectl latest               # Installs latest stable version of kubectl
 k8s install kubectl v1.19.2 --timeout=300   # Install 1.19.2 with timeout of 300 seconds. Default timeout is 120 seconds.
+k8senv install kubectl auto # Get Kubernetes version from current context and Install same version of kubectl
 ```
 
 **List all installed version of kubectl**
@@ -116,6 +121,7 @@ Any of below commands can be used to switch kubectl version to 1.26.2. If versio
 k8senv use kubectl v1.26.2
 k8senv use kubectl 1.26.2
 k8senv kubectl use v1.26.2
+k8senv use kubectl auto
 ```
 
 If you were using system installed version of `kubectl` in same shell session, you will need to clear the cached path of the kubectl using below command.

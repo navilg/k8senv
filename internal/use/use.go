@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/navilg/k8senv/internal/config"
+	"github.com/navilg/k8senv/internal/ikubernetes"
 	"github.com/navilg/k8senv/internal/install"
 )
 
@@ -17,6 +18,28 @@ func UseVersion(toolname, version string) error {
 	if dotK8sEnvPath == nil {
 		fmt.Println(".k8senv/bin directory is not added in PATH environment variable")
 		return errors.New(".k8senv/bin is not added in PATH environment variable")
+	}
+
+	if toolname == "kubectl" && version == "auto" {
+		fmt.Println("Fetching Kubernetes server version")
+		k8sVersion, err := ikubernetes.GetK8sVersion()
+		if err != nil {
+			fmt.Println("Error getting Kubernetes server version")
+			return err
+		}
+		version = *k8sVersion
+		fmt.Println("Kubernetes server version is", version)
+	}
+
+	if toolname == "velero" && version == "auto" {
+		fmt.Println("Fetching Velero server version")
+		veleroVersion, err := ikubernetes.GetVeleroVersion()
+		if err != nil {
+			fmt.Println("Error getting Velero server version")
+			return err
+		}
+		version = *veleroVersion
+		fmt.Println("Velero server version is", version)
 	}
 
 	major_minor_patch_vers := strings.Split(version, ".")
