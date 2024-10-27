@@ -16,6 +16,7 @@ import (
 	"github.com/navilg/k8senv/internal/checksum"
 	"github.com/navilg/k8senv/internal/config"
 	"github.com/navilg/k8senv/internal/download"
+	"github.com/navilg/k8senv/internal/ikubernetes"
 )
 
 func InstallVersion(toolname, version string, overwrite bool, timeout int, proxy string) error {
@@ -64,6 +65,17 @@ func InstallKubectl(version string, overwrite bool, timeout int, proxy string) e
 		version = string(data)
 		fmt.Println("Latest available stable version of kubectl is", version)
 
+	}
+
+	if version == "auto" {
+		fmt.Println("Fetching Kubernetes server version")
+		k8sVersion, err := ikubernetes.GetK8sVersion()
+		if err != nil {
+			fmt.Println("Error getting Kubernetes server version")
+			return err
+		}
+		version = *k8sVersion
+		fmt.Println("Kubernetes server version is", version)
 	}
 
 	major_minor_patch_vers := strings.Split(version, ".")
