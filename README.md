@@ -77,12 +77,13 @@ k8senv [VERB] [CLIENT] [VERSION]
 
 # [VERB] can be install, use, list or remove
 # [CLIENT] can be kubectl, velero or helm
-# [VERSION] can be any client's version in format v*.*.* or latest or auto (auto is only supported for kubectl install and use subcommands)
+# [VERSION] can be any client's version in format v*.*.* or latest or auto (auto is only supported for kubectl and velero client for install and use subcommands)
 
 examples:
 
 k8senv use kubectl v1.23.2
 k8senv install velero v1.8.1
+k8senv use velero auto # Automatically detects Velero server version from current context and use same velero client version
 k8senv install kubectl latest # To install latest available kubectl
 k8senv install kubectl auto # Automatically detects Kubernetes version from current context and downloads same kubectl version
 ```

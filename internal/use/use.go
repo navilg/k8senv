@@ -31,6 +31,17 @@ func UseVersion(toolname, version string) error {
 		fmt.Println("Kubernetes server version is", version)
 	}
 
+	if toolname == "velero" && version == "auto" {
+		fmt.Println("Fetching Velero server version")
+		veleroVersion, err := ikubernetes.GetVeleroVersion()
+		if err != nil {
+			fmt.Println("Error getting Velero server version")
+			return err
+		}
+		version = *veleroVersion
+		fmt.Println("Velero server version is", version)
+	}
+
 	major_minor_patch_vers := strings.Split(version, ".")
 
 	if !strings.HasPrefix(major_minor_patch_vers[0], "v") {

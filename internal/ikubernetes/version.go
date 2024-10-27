@@ -1,11 +1,15 @@
 package ikubernetes
 
 import (
+	"context"
 	"errors"
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
+	"strings"
 
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -44,5 +48,51 @@ func GetK8sVersion() (*string, error) {
 	k8sSemversion := k8sVersion.String()
 
 	return &k8sSemversion, nil
+
+}
+
+func GetVeleroVersion() (*string, error) {
+	var kubeconfig *rest.Config
+	homeDir, _ := os.UserHomeDir()
+	var err error = nil
+
+	if kubeconfigEnv := os.Getenv("KUBECONFIG"); kubeconfigEnv != "" {
+		kubeconfig, err = clientcmd.BuildConfigFromFlags("", kubeconfigEnv)
+		if err != nil {
+			return nil, err
+		}
+	} else if _, err := os.Stat(filepath.Join(homeDir, ".kube", "config")); err == nil {
+		kubeconfig, err = clientcmd.BuildConfigFromFlags("", filepath.Join(homeDir, ".kube", "config"))
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		return nil, errors.New("KUBECONFIG file not found")
+	}
+
+	clientset, err := kubernetes.NewForConfig(kubeconfig)
+	if err != nil {
+		log.Fatalf("Error setting up K8s client")
+	}
+
+	namespace := "velero"
+	deploymentName := "velero"
+
+	deployment, err := clientset.AppsV1().Deployments(namespace).Get(context.TODO(), deploymentName, metav1.GetOptions{})
+	if err != nil {
+		return nil, errors.New("Error retrieving velero deployment from velero namespace")
+	}
+
+	veleroImageName := deployment.Spec.Template.Spec.Containers[0].Image
+
+	veleroVersion := strings.Split(veleroImageName, ":")[1]
+
+	semVersionRegex := regexp.MustCompile(`^v?(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-.]+))?(?:\+([0-9A-Za-z-.]+))?$`)
+
+	if !semVersionRegex.MatchString(veleroVersion) {
+		return nil, errors.New("Velero image used in velero deployment is not semantic version: " + veleroVersion)
+	}
+
+	return &veleroVersion, nil
 
 }
