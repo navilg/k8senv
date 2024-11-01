@@ -3,7 +3,6 @@ package ikubernetes
 import (
 	"context"
 	"errors"
-	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -37,12 +36,12 @@ func GetK8sVersion() (*string, error) {
 
 	clientset, err := kubernetes.NewForConfig(kubeconfig)
 	if err != nil {
-		log.Fatalf("Error setting up K8s client")
+		return nil, err
 	}
 
 	k8sVersion, err := clientset.ServerVersion()
 	if err != nil {
-		log.Fatalf("Error getting K8s server version: %v", err)
+		return nil, err
 	}
 
 	k8sSemversion := k8sVersion.String()
@@ -72,7 +71,7 @@ func GetVeleroVersion() (*string, error) {
 
 	clientset, err := kubernetes.NewForConfig(kubeconfig)
 	if err != nil {
-		log.Fatalf("Error setting up K8s client")
+		return nil, err
 	}
 
 	namespace := "velero"
@@ -80,7 +79,7 @@ func GetVeleroVersion() (*string, error) {
 
 	deployment, err := clientset.AppsV1().Deployments(namespace).Get(context.TODO(), deploymentName, metav1.GetOptions{})
 	if err != nil {
-		return nil, errors.New("Error retrieving velero deployment from velero namespace")
+		return nil, errors.New("error retrieving velero deployment from velero namespace")
 	}
 
 	veleroImageName := deployment.Spec.Template.Spec.Containers[0].Image
@@ -90,7 +89,7 @@ func GetVeleroVersion() (*string, error) {
 	semVersionRegex := regexp.MustCompile(`^v?(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-.]+))?(?:\+([0-9A-Za-z-.]+))?$`)
 
 	if !semVersionRegex.MatchString(veleroVersion) {
-		return nil, errors.New("Velero image used in velero deployment is not semantic version: " + veleroVersion)
+		return nil, errors.New("velero image used in velero deployment is not semantic version: " + veleroVersion)
 	}
 
 	return &veleroVersion, nil
