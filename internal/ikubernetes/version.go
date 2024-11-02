@@ -44,7 +44,16 @@ func GetK8sVersion() (*string, error) {
 		return nil, err
 	}
 
-	k8sSemversion := k8sVersion.String()
+	k8sSemversionSplit := strings.Split(k8sVersion.String(), ".")
+
+	re := regexp.MustCompile(`[^0-9]`)
+	result := re.ReplaceAllString(k8sSemversionSplit[2], "/")
+
+	resultSplit := strings.Split(result, "/")
+
+	k8sSemversionPatch := resultSplit[0]
+
+	k8sSemversion := k8sSemversionSplit[0] + "." + k8sSemversionSplit[1] + "." + k8sSemversionPatch
 
 	return &k8sSemversion, nil
 
