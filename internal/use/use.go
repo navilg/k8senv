@@ -24,7 +24,7 @@ func UseVersion(toolname, version string) error {
 		fmt.Println("Fetching Kubernetes server version")
 		k8sVersion, err := ikubernetes.GetK8sVersion()
 		if err != nil {
-			fmt.Println("Error getting Kubernetes server version")
+			fmt.Println("Error getting Kubernetes server version. Error:", err.Error())
 			return err
 		}
 		version = *k8sVersion
