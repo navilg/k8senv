@@ -1,4 +1,4 @@
-FROM golang:1.20.3-alpine3.17 as build
+FROM golang:1.23.2-alpine3.20 as build
 ARG OS
 ARG ARCH
 WORKDIR /build
@@ -7,7 +7,7 @@ RUN apk add git
 RUN go mod download && \
     CGO_ENABLED=0 go build -o k8senv
 
-FROM alpine:3.17
+FROM alpine:3.20
 ARG VERSION
 ARG user=k8senv
 ARG group=k8senv
